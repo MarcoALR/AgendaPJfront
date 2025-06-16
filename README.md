@@ -37,7 +37,7 @@
 ## 📸 Preview da Interface
 
 <p align="center">
-  <img src="./public/preview-agenda.png" alt="Preview da Agenda PJ" width="700">
+  <img src="./public/previewindex.jpg" alt="Preview da Agenda PJ" width="700">
 </p>
 
 ---
