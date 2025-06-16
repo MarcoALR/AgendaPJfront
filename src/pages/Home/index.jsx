@@ -23,8 +23,7 @@ function Home() {
   }
 }, []);
 
-
-  const login = async () => {
+const login = async () => {
   if (!email || !password) {
     setErrorMsg('Preencha todos os campos.');
     return;
@@ -38,9 +37,8 @@ function Home() {
 
     localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
 
-    // Redireciona direto pro HTML
-    window.location.assign('/criarcontato.html');
-
+    // Use navigate para redirecionar para a página de Criar Contato
+    navigate('/criarcontato');
   } catch (error) {
     if (error.response?.status === 401) {
       setErrorMsg('Email ou senha incorretos.');
@@ -51,6 +49,7 @@ function Home() {
     }
   }
 };
+
 
   const irParaCadastro = () => {
     navigate('/cadastrar');
