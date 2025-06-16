@@ -17,39 +17,37 @@ function Home() {
   }, [color]);
 
   useEffect(() => {
-  const usuario = localStorage.getItem('usuarioLogado');
-  if (usuario) {
-    window.location.href = 'https://agenda-h1262csyw-marcoalrs-projects.vercel.app/criarcontato.html';
-  }
-}, []);
-
-const login = async () => {
-  if (!email || !password) {
-    setErrorMsg('Preencha todos os campos.');
-    return;
-  }
-
-  try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL || 'https://apiusuarios-afl5.onrender.com'}/login`,
-      { email, password }
-    );
-
-    localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
-
-    // Use navigate para redirecionar para a página de Criar Contato
-    navigate('/criarcontato');
-  } catch (error) {
-    if (error.response?.status === 401) {
-      setErrorMsg('Email ou senha incorretos.');
-    } else if (error.message === 'Network Error') {
-      setErrorMsg('Servidor indisponível. Verifique sua conexão.');
-    } else {
-      setErrorMsg('Erro ao tentar logar. Tente novamente mais tarde.');
+    const usuario = localStorage.getItem('usuarioLogado');
+    if (usuario) {
+      navigate('/criarcontato'); 
     }
-  }
-};
+  }, [navigate]);
 
+  const login = async () => {
+    if (!email || !password) {
+      setErrorMsg('Preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL || 'https://apiusuarios-afl5.onrender.com'}/login`,
+        { email, password }
+      );
+
+      localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
+
+      navigate('/criarcontato');
+    } catch (error) {
+      if (error.response?.status === 401) {
+        setErrorMsg('Email ou senha incorretos.');
+      } else if (error.message === 'Network Error') {
+        setErrorMsg('Servidor indisponível. Verifique sua conexão.');
+      } else {
+        setErrorMsg('Erro ao tentar logar. Tente novamente mais tarde.');
+      }
+    }
+  };
 
   const irParaCadastro = () => {
     navigate('/cadastrar');
