@@ -19,7 +19,7 @@ function Home() {
   useEffect(() => {
     const usuario = localStorage.getItem('usuarioLogado');
     if (usuario) {
-      navigate('/criarcontato'); 
+      navigate('/criarcontato');
     }
   }, [navigate]);
 
@@ -38,6 +38,7 @@ function Home() {
       localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
 
       navigate('/criarcontato');
+      setTimeout(() => window.location.reload(), 300)
     } catch (error) {
       if (error.response?.status === 401) {
         setErrorMsg('Email ou senha incorretos.');
