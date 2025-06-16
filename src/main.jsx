@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home';
-import Criarcontato from './criarcontato.html';
 import Cadastrar from './pages/Home/cadastrar';
 
 createRoot(document.getElementById('root')).render(
@@ -12,7 +11,6 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cadastrar" element={<Cadastrar />} />
-        <Route path="/criarcontato" element={<Criarcontato />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
