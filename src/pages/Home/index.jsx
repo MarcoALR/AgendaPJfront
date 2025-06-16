@@ -37,7 +37,7 @@ function Home() {
 
       localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
 
-      navigate('https://agenda-85oymc3zl-marcoalrs-projects.vercel.app/criarcontato');
+      navigate('/criarcontato');
       setTimeout(() => window.location.reload(), 300)
     } catch (error) {
       if (error.response?.status === 401) {
