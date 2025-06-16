@@ -47,7 +47,7 @@
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/agenda-pj.git
+git clone https://github.com/MarcoALR/AgendaPJFront.git
 
 2. Instale as dependências
 
