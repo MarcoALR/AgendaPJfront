@@ -1,28 +1,28 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const usuarioLogado = localStorage.getItem("usuarioLogado");
+  document.addEventListener("DOMContentLoaded", function () {
+    const usuarioLogado = localStorage.getItem("usuarioLogado");
+    
+    if (!usuarioLogado) {
+      alert("⚠️ Você precisa estar logado para acessar esta página.");
+      window.location.replace("http://localhost:5173"); 
+    }
 
-  if (!usuarioLogado) {
-    alert("⚠️ Você precisa estar logado para acessar esta página.");
-    window.location.replace("http://localhost:5173");
-  }
+    const logoutBtn = document.getElementById("logout-button");
 
-  const logoutBtn = document.getElementById("logout-button");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function () {
+        const usuario = localStorage.getItem("usuarioLogado");
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      const usuario = localStorage.getItem("usuarioLogado");
-
-      if (usuario) {
-        localStorage.removeItem("usuarioLogado");
-        console.log("✅ Logout realizado");
-        alert("Você saiu da sua conta.");
-        window.location.replace("http://localhost:5173");
-      } else {
-        alert("⚠️ Nenhum usuário estava logado.");
-      }
-    });
-  }
-});
+        if (usuario) {
+          localStorage.removeItem("usuarioLogado");
+          console.log("✅ Logout realizado");
+          alert("Você saiu da sua conta.");
+          window.location.replace("http://localhost:5173"); 
+        } else {
+          alert("⚠️ Nenhum usuário estava logado.");
+        }
+      });
+    }
+  });
 
     let contacts = [];
     let editingId = null;

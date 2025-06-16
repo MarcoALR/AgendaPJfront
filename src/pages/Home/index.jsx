@@ -11,7 +11,7 @@ function Home() {
   const [color, setColor] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,11 +36,16 @@ function Home() {
         `${import.meta.env.VITE_API_URL || 'https://apiusuarios-afl5.onrender.com'}/login`,
         { email, password }
       );
+      
+      const { token, usuario } = response.data;
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setErrorMsg('');
 
-      localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
 
       navigate('/criarcontato');
-      setTimeout(() => window.location.reload(), 300)
+      setTimeout(() => window.location.reload(), 300);
     } catch (error) {
       if (error.response?.status === 401) {
         setErrorMsg('Email ou senha incorretos.');
