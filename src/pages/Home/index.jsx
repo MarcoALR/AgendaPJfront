@@ -19,7 +19,7 @@ function Home() {
   useEffect(() => {
   const usuario = localStorage.getItem('usuarioLogado');
   if (usuario) {
-    window.location.href = 'https://agenda-h1262csyw-marcoalrs-projects.vercel.app/criarcontato.html';
+    window.location.href = 'criarcontato.html';
   }
 }, []);
 
