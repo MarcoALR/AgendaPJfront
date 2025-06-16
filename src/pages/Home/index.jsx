@@ -38,7 +38,8 @@ function Home() {
 
     localStorage.setItem('usuarioLogado', JSON.stringify(response.data.user));
 
-    window.location.href = '/criarcontato.html';
+    // Redireciona direto pro HTML
+    window.location.assign('/criarcontato.html');
 
   } catch (error) {
     if (error.response?.status === 401) {
