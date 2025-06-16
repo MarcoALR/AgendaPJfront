@@ -1,12 +1,95 @@
-# React + Vite
+<h1 align="center">📇 Agenda PJ</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  Aplicativo web moderno para gerenciamento de contatos pessoais e profissionais.
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <img src="./public/preview-agenda.png" alt="Agenda PJ Preview" width="700"/>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🌐 Sobre o Projeto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Agenda PJ** é um painel onde usuários podem:
+
+- Criar uma conta e fazer login
+- Adicionar contatos com nome, telefone, email e categoria
+- Visualizar todos os contatos cadastrados
+- Alternar entre tema claro/escuro
+- Marcar contatos como favoritos
+- Salvar e manter os dados localmente com `localStorage`
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+- **React**
+- **React Router DOM**
+- **Axios**
+- **CSS moderno responsivo**
+- **LocalStorage para persistência de dados**
+- **Node.js + Express + MongoDB (backend hospedado)**
+
+---
+
+## 📸 Preview da Interface
+
+<p align="center">
+  <img src="./public/preview-agenda.png" alt="Preview da Agenda PJ" width="700">
+</p>
+
+---
+
+## 🔧 Como Executar
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/seu-usuario/agenda-pj.git
+
+2. Instale as dependências
+
+npm install
+
+3. Crie um arquivo .env na raiz
+
+VITE_API_URL=https://apiusuarios-afl5.onrender.com
+
+4. Execute a aplicação
+
+npm run dev
+
+🗂️ Estrutura de Pastas (simplificada)
+
+src/
+├── assets/
+│   └── agendapjlogo.png
+├── pages/
+│   ├── Home/
+│   │   ├── index.jsx
+│   │   ├── cadastrar.jsx
+│   │   └── criarcontato.jsx
+├── services/
+│   └── api.js
+├── App.jsx
+└── main.jsx
+🧠 Funcionalidades
+🔐 Autenticação de usuários
+
+👤 Cadastro de novos usuários
+
+📇 Criação de contatos
+
+🔍 Filtragem por categoria
+
+🌗 Tema claro/escuro
+
+⭐ Marcar favoritos
+
+🚪 Logout
+
+💡 Autor
+MarcoALR
+```
