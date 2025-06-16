@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import agendapjLogo from './logoagenda.png';
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './style.css';
 
 function Home() {
@@ -9,7 +10,8 @@ function Home() {
   const [password, setPassword] = useState('');
   const [color, setColor] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-
+  const [showPassword, setShowPassword] = useState(false);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,13 +68,21 @@ function Home() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          placeholder="Senha"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="password-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Senha"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            className="password-toggle-icon"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
         <button onClick={login}>Entrar</button>
         <button onClick={irParaCadastro} className="botao-cadastro">
           Criar conta
