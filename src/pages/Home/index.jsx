@@ -17,11 +17,12 @@ function Home() {
   }, [color]);
 
   useEffect(() => {
-    const usuario = localStorage.getItem('usuarioLogado');
-    if (usuario) {
-      navigate('/criarcontato');
-    }
-  }, [navigate]);
+  const usuario = localStorage.getItem('usuarioLogado');
+  if (usuario) {
+    window.location.href = 'https://agenda-h1262csyw-marcoalrs-projects.vercel.app/criarcontato.html';
+  }
+}, []);
+
 
   const login = async () => {
     if (!email || !password) {
