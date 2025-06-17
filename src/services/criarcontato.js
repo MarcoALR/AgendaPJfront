@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken")
 
   if (!token) {
     alert("⚠️ Você precisa estar logado para acessar esta página.");
