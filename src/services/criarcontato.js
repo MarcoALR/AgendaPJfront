@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  const token = localStorage.getItem("accessToken")
+  const token = localStorage.getItem("accessToken");
 
   if (!token) {
     alert("⚠️ Você precisa estar logado para acessar esta página.");
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   } catch (error) {
     console.error("❌ Token inválido:", error);
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     localStorage.removeItem("usuarioLogado");
     alert("⚠️ Sessão expirada. Faça login novamente.");
     window.location.replace("/"); 
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", function () {
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
       console.log("✅ Logout realizado");
       alert("Você saiu da sua conta.");
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 });
+
 
 
 
