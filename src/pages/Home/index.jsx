@@ -14,13 +14,17 @@ function Home() {
 
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL || 'https://apiusuarios-afl5.onrender.com';
+
   useEffect(() => {
     document.body.style.backgroundColor = color || '';
   }, [color]);
 
   useEffect(() => {
     const usuario = localStorage.getItem('usuarioLogado');
-    if (usuario) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (usuario && accessToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       navigate('/criarcontato');
     }
   }, [navigate]);
@@ -30,22 +34,24 @@ function Home() {
       setErrorMsg('Preencha todos os campos.');
       return;
     }
-
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'https://apiusuarios-afl5.onrender.com'}/login`,
-        { email, password }
-      );
-      
-      const { token, usuario } = response.data;
-      localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setErrorMsg('');
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
+        password
+      });
 
+      const { accessToken, refreshToken, usuario } = response.data;
+
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      setErrorMsg('');
 
       navigate('/criarcontato');
       setTimeout(() => window.location.reload(), 300);
+
     } catch (error) {
       if (error.response?.status === 401) {
         setErrorMsg('Email ou senha incorretos.');
@@ -60,6 +66,44 @@ function Home() {
   const irParaCadastro = () => {
     navigate('/cadastrar');
   };
+
+  // Interceptador para lidar com token expirado
+  axios.interceptors.response.use(
+    response => response,
+    async error => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!refreshToken) {
+          localStorage.clear();
+          navigate('/');
+          return Promise.reject(error);
+        }
+
+        try {
+          const res = await axios.post(`${API_URL}/refresh-token`, {
+            refreshToken
+          });
+
+          const newAccessToken = res.data.accessToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+          return axios(originalRequest);
+        } catch (refreshError) {
+          localStorage.clear();
+          navigate('/');
+          return Promise.reject(refreshError);
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <div className="banner">

@@ -1,28 +1,49 @@
-  document.addEventListener("DOMContentLoaded", function () {
-    const usuarioLogado = localStorage.getItem("usuarioLogado");
-    
-    if (!usuarioLogado) {
-      alert("⚠️ Você precisa estar logado para acessar esta página.");
-      window.location.replace("http://localhost:5173"); 
+document.addEventListener("DOMContentLoaded", async function () {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("⚠️ Você precisa estar logado para acessar esta página.");
+    window.location.replace("/"); 
+    return;
+  }
+
+  try {
+    const response = await fetch("https://apiusuarios-afl5.onrender.com/validate-token", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Token inválido");
     }
 
-    const logoutBtn = document.getElementById("logout-button");
+    console.log("✅ Token válido, usuário autenticado");
 
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", function () {
-        const usuario = localStorage.getItem("usuarioLogado");
+  } catch (error) {
+    console.error("❌ Token inválido:", error);
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuarioLogado");
+    alert("⚠️ Sessão expirada. Faça login novamente.");
+    window.location.replace("/"); 
+  }
 
-        if (usuario) {
-          localStorage.removeItem("usuarioLogado");
-          console.log("✅ Logout realizado");
-          alert("Você saiu da sua conta.");
-          window.location.replace("http://localhost:5173"); 
-        } else {
-          alert("⚠️ Nenhum usuário estava logado.");
-        }
-      });
-    }
-  });
+  const logoutBtn = document.getElementById("logout-button");
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      localStorage.removeItem("token");
+      localStorage.removeItem("usuarioLogado");
+      console.log("✅ Logout realizado");
+      alert("Você saiu da sua conta.");
+      window.location.replace("/"); 
+    });
+  }
+});
+
+
 
     let contacts = [];
     let editingId = null;
