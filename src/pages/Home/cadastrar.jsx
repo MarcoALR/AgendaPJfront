@@ -5,7 +5,6 @@ import agendapjLogo from "./logoagenda.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import api from "../../services/api";
 
-
 function Home() {
   const navigate = useNavigate();
   const [Users, setUsers] = useState([]);
@@ -16,6 +15,11 @@ function Home() {
   const [passwordStrength, setPasswordStrength] = useState("");
   const [strengthPercent, setStrengthPercent] = useState(0);
   const [emailHint, setEmailHint] = useState("");
+
+  const [nameValue, setNameValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
 
   const inputName = useRef();
   const inputEmail = useRef();
@@ -47,9 +51,13 @@ function Home() {
 
   function handleEmailInput(e) {
     const value = e.target.value;
+    setEmailValue(value);
     inputEmail.current.value = value;
-    if (value && !value.includes("@")) {
-      setEmailHint("💡 Adicione um '@' no email");
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (value && !emailRegex.test(value)) {
+      setEmailHint("⚠️E-mail inválido: exemplo@dominio.com");
     } else {
       setEmailHint("");
     }
@@ -57,6 +65,7 @@ function Home() {
 
   function handlePasswordInput(e) {
     const value = e.target.value;
+    setPasswordValue(value);
     inputPassword.current.value = value;
     validatePasswordStrength(value);
   }
@@ -70,44 +79,8 @@ function Home() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-    const commonDomains = [
-      "gmail.com",
-      "yahoo.com",
-      "hotmail.com",
-      "outlook.com",
-      "live.com",
-    ];
-    const domainSuggestions = {
-      "gmal.com": "gmail.com",
-      "gnail.com": "gmail.com",
-      "gmaill.com": "gmail.com",
-      "yaho.com": "yahoo.com",
-      "hotmial.com": "hotmail.com",
-      "outlok.com": "outlook.com",
-    };
-
     if (!emailRegex.test(email)) {
       showMessage("⚠️ Insira um e-mail válido!", "erro");
-      return;
-    }
-
-    const domain = email.split("@")[1]?.toLowerCase();
-    if (domain && domainSuggestions[domain]) {
-      showMessage(
-        `⚠️ Você quis dizer "${email.split("@")[0]}@${
-          domainSuggestions[domain]
-        }"? Corrija o domínio.`,
-        "erro"
-      );
-      return;
-    }
-
-    const isCommonDomain = commonDomains.includes(domain);
-    if (!isCommonDomain) {
-      showMessage(
-        `⚠️ Atenção: o domínio de e-mail "${domain}" é incomum. Verifique se está correto.`,
-        "erro"
-      );
       return;
     }
 
@@ -139,7 +112,7 @@ function Home() {
 
       setTimeout(() => {
         navigate("/");
-      }, 1500);
+      },900);
     } catch (error) {
       showMessage("❌ Erro ao criar usuário.", "erro");
       console.error(error);
@@ -166,30 +139,74 @@ function Home() {
         )}
 
         <div className="login-container">
-          <input type="text" placeholder="Nome" required ref={inputName} />
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            onChange={handleEmailInput}
-            ref={inputEmail}
-          />
-          {emailHint && <p className="input-hint">{emailHint}</p>}
-
-          <div className="password-container">
+          <div className="input-container">
             <input
-              className="password-input"
-              type={showPassword ? "text" : "password"}
-              placeholder="Senha"
+              style={{ color: "#333" }}
+              type="text"
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
+              ref={inputName}
+              className={nameValue ? "has-content" : ""}
+              placeholder=" "
               required
+            />
+            <label>Nome</label>
+          </div>
+          {emailHint && <p className="input-hint">{emailHint}</p>}
+          <div className="input-container">
+            <input
+              style={{ color: "#333" }}
+              type="email"
+              value={emailValue}
+              onChange={handleEmailInput}
+              ref={inputEmail}
+              className={emailValue ? "has-content" : ""}
+              placeholder=" "
+              required
+            />
+            <label>E-mail</label>
+          </div>
+
+          <div className="input-container password-container">
+            <input
+              style={{ color: "#333" }}
+              type={showPassword ? "text" : "password"}
+              value={passwordValue}
               onChange={handlePasswordInput}
               ref={inputPassword}
+              className={`password-input ${
+                passwordValue ? "has-content" : ""
+              }`}
+              placeholder=" "
+              required
             />
+            <label>Senha</label>
             <span
               onClick={() => setShowPassword((prev) => !prev)}
               className="password-toggle-icon"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <div className="input-container">
+            <input
+              style={{ color: "#333" }}
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPasswordValue}
+              onChange={(e) => setConfirmPasswordValue(e.target.value)}
+              ref={inputConfirmPassword}
+              className={`password-input ${
+                confirmPasswordValue ? "has-content" : ""
+              }`}
+              placeholder=" "
+              required
+            />
+            <label>Confirmar Senha</label>
+            <span
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="password-toggle-icon"
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
 
@@ -206,24 +223,7 @@ function Home() {
               </p>
             </>
           )}
-
-          <div className="password-container">
-            <input
-              className="password-input"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirmar Senha"
-              required
-              ref={inputConfirmPassword}
-            />
-            <span
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="password-toggle-icon"
-            >
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
-
-          <button onClick={createUsers}>Criar</button>
+          <button onClick={createUsers}>Criar a conta</button>
         </div>
 
         <footer>

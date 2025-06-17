@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const token = localStorage.getItem("accessToken");
 
   if (!token) {
-    alert("⚠️ Você precisa estar logado para acessar esta página.");
+    alert("⚠️ Você precisa estar autenticado para acessar esta página.");
     window.location.replace("/"); 
     return;
   }
@@ -17,16 +17,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     if (!response.ok) {
-      throw new Error("Token inválido");
+      throw new Error("Sessão inválida ou expirada");
     }
 
-    console.log("✅ Token válido, usuário autenticado");
+    console.log("✅ Sessão válida, usuário autenticado");
 
   } catch (error) {
-    console.error("❌ Token inválido:", error);
+    console.error("❌ Erro de autenticação:", error);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("usuarioLogado");
-    alert("⚠️ Sessão expirada. Faça login novamente.");
+    alert("⚠️sessão expirada. Por favor, faça o login.⚠️");
     window.location.replace("/"); 
   }
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     logoutBtn.addEventListener("click", function () {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
-      console.log("✅ Logout realizado");
+      console.log("Logout realizado");
       alert("Você saiu da sua conta.");
       window.location.replace("/"); 
     });
