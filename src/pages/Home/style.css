@@ -60,20 +60,22 @@ body {
 
 .banner h2 {
   font-family: "Roboto", sans-serif;
-  font-size: 3rem;
-  color: #e0e0e0;
+  font-size: 3.1rem;
+  font-weight: 700;
+  color: #eeeeee;
   line-height: 1.2;
   letter-spacing: 1.5px;
   text-align: center;
   text-shadow:
-    0 5px 12px rgba(0, 0, 0, 0.801),
-    0 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 2px rgba(0, 0, 0, 0.9);
+    0 6px 15px rgba(0, 0, 0, 0.819),
+    0 3px 8px rgba(0, 0, 0, 0.5),
+    0 0 2px rgba(0, 0, 0, 0.8);
   animation: fadeInUp 2.5s ease-out forwards;
   opacity: 0;
   margin: 0 auto 20px auto;
   padding: 0 20px;
   position: relative;
+  filter: drop-shadow(0 2px 3px rgba(162, 162, 162, 0.496));
 }
 
 .banner h2::before {
@@ -105,7 +107,6 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('/src/assets/after.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
@@ -222,42 +223,6 @@ footer img {
   .login-container {
     padding: 20px;
     border-radius: 12px;
-  }
-}
-
-@keyframes bgZoomIn {
-  from {
-    transform: scale(1.1);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes bgZoomOut {
-  from {
-    transform: scale(1);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 

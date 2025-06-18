@@ -26,7 +26,7 @@ function Home() {
     const accessToken = localStorage.getItem("accessToken");
     if (usuario && accessToken) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-      navigate("/criarcontato");
+     window.location.href = "/criarcontato.html";
     }
   }, [navigate]);
 
@@ -48,7 +48,7 @@ function Home() {
         email,
         password,
       });
-
+  
       const { accessToken, refreshToken, usuario } = response.data;
 
       localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
