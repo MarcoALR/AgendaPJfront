@@ -108,7 +108,15 @@ function Cadastrar() {
         navigate("/");
       }, 900);
     } catch (error) {
-      showMessage("❌ Erro ao criar usuário / E-mail já cadastrado ❌", "erro");
+      if (error.response?.status === 409) {
+        showMessage("❌ E-mail já cadastrado ❌", "erro");
+      } else {
+        showMessage(
+          "❌ Erro ao criar usuário. Tente novamente mais tarde. ❌",
+          "erro"
+        );
+      }
+
       console.error(error);
     }
   }
