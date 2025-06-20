@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./../styles/criarcontato.css";
 import agendapjLogo from "./../assets/logoagenda.png";
 import axios from "axios";
-import { CgEnter } from "react-icons/cg";
 
 function CriarContato() {
   const navigate = useNavigate();
@@ -41,7 +40,10 @@ function CriarContato() {
         }
 
         if (usuario && usuario.email) {
-          const savedContacts = JSON.parse(localStorage.getItem(`agenda-contatos-${usuario.email}`)) || [];
+          const savedContacts =
+            JSON.parse(
+              localStorage.getItem(`agenda-contatos-${usuario.email}`)
+            ) || [];
           setContacts(savedContacts);
         }
 
@@ -63,7 +65,10 @@ function CriarContato() {
     setContacts(newContacts);
     const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
     if (usuario && usuario.email) {
-      localStorage.setItem(`agenda-contatos-${usuario.email}`, JSON.stringify(newContacts));
+      localStorage.setItem(
+        `agenda-contatos-${usuario.email}`,
+        JSON.stringify(newContacts)
+      );
     }
   };
 
@@ -169,16 +174,18 @@ function CriarContato() {
     localStorage.setItem("theme", newThemeDark ? "dark" : "light");
   };
 
-const logout = () => {
-  const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
-  if (confirmLogout) {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("usuarioLogado");
-    console.log("Logout realizado");
-    alert("Você saiu da sua conta.");
-    navigate("/");
-  }
-};
+  const logout = () => {
+    const confirmLogout = window.confirm(
+      "Tem certeza que quer sair da sua conta?"
+    );
+    if (confirmLogout) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("usuarioLogado");
+      console.log("Logout realizado");
+      alert("Você saiu da sua conta.");
+      navigate("/");
+    }
+  };
 
   return (
     <div className={`container ${themeDark ? "dark-theme" : ""}`}>

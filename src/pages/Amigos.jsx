@@ -1,4 +1,3 @@
-// Amigos.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
@@ -38,9 +37,7 @@ function Amigos() {
 
         console.log("✅ Sessão válida, usuário autenticado");
 
-        // Carregar contatos da categoria "Amigos"
         loadAmigos();
-
       } catch (error) {
         console.error("❌ Erro de autenticação:", error);
         localStorage.removeItem("accessToken");
@@ -70,7 +67,7 @@ function Amigos() {
 
     if (data) {
       const contactsData = JSON.parse(data);
-      const filtered = contactsData.filter(c => c.category === "Amigos");
+      const filtered = contactsData.filter((c) => c.category === "Amigos");
       setContacts(filtered);
     } else {
       setContacts([]);
@@ -106,15 +103,27 @@ function Amigos() {
         <h2 className="logo">👫 Amigos</h2>
         <nav>
           <ul>
-            <li><a href="/criarcontato">Painel 📇</a></li>
-            <li><a href="/contatos">Contatos 👥</a></li>
-            <li><a href="/favoritos">⭐ Favoritos</a></li>
+            <li>
+              <a href="/criarcontato">Painel 📇</a>
+            </li>
+            <li>
+              <a href="/contatos">Contatos 👥</a>
+            </li>
+            <li>
+              <a href="/favoritos">⭐ Favoritos</a>
+            </li>
           </ul>
           <ul>
             <br />
-            <li><a href="/familia">👨‍👩‍👧 Família</a></li>
-            <li><a href="/trabalho">💼 Trabalho</a></li>
-            <li><a href="/outros">📂 Outros</a></li>
+            <li>
+              <a href="/familia">👨‍👩‍👧 Família</a>
+            </li>
+            <li>
+              <a href="/trabalho">💼 Trabalho</a>
+            </li>
+            <li>
+              <a href="/outros">📂 Outros</a>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -145,7 +154,9 @@ function Amigos() {
                 <h3>{contact.name}</h3>
                 <p>📞 {contact.phone}</p>
                 <p>📧 {contact.email || "—"}</p>
-                <p>📁 Categoria: <strong>{contact.category}</strong></p>
+                <p>
+                  📁 Categoria: <strong>{contact.category}</strong>
+                </p>
                 {contact.favorite && <p>⭐ Favorito</p>}
               </div>
             ))

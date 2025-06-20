@@ -37,7 +37,6 @@ function Trabalho() {
 
         console.log("✅ Sessão válida, usuário autenticado");
 
-        // Carregar contatos da categoria "Trabalho"
         loadTrabalho();
 
       } catch (error) {

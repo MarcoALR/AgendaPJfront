@@ -1,5 +1,3 @@
-// src/pages/Contatos.jsx
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
@@ -71,7 +69,9 @@ function Contatos() {
   };
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
+    const confirmLogout = window.confirm(
+      "Tem certeza que quer sair da sua conta?"
+    );
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
@@ -82,9 +82,7 @@ function Contatos() {
   };
 
   const filteredContacts = contacts
-    .filter((c) =>
-      c.name.toLowerCase().includes(searchName.toLowerCase())
-    )
+    .filter((c) => c.name.toLowerCase().includes(searchName.toLowerCase()))
     .filter((c) => (filterCategory ? c.category === filterCategory : true))
     .sort((a, b) =>
       sortOrder === "az"

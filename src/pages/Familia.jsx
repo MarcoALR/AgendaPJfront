@@ -1,4 +1,3 @@
-// Familia.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
@@ -37,10 +36,7 @@ function Familia() {
         }
 
         console.log("✅ Sessão válida, usuário autenticado");
-
-        // Carregar contatos da categoria "Família"
         loadFamilia();
-
       } catch (error) {
         console.error("❌ Erro de autenticação:", error);
         localStorage.removeItem("accessToken");
@@ -70,7 +66,7 @@ function Familia() {
 
     if (data) {
       const contactsData = JSON.parse(data);
-      const filtered = contactsData.filter(c => c.category === "Família");
+      const filtered = contactsData.filter((c) => c.category === "Família");
       setContacts(filtered);
     } else {
       setContacts([]);
@@ -106,15 +102,27 @@ function Familia() {
         <h2 className="logo">👨‍👩‍👧 Família</h2>
         <nav>
           <ul>
-            <li><a href="/criarcontato">Painel 📇</a></li>
-            <li><a href="/contatos">Contatos 👥</a></li>
-            <li><a href="/favoritos">⭐ Favoritos</a></li>
+            <li>
+              <a href="/criarcontato">Painel 📇</a>
+            </li>
+            <li>
+              <a href="/contatos">Contatos 👥</a>
+            </li>
+            <li>
+              <a href="/favoritos">⭐ Favoritos</a>
+            </li>
           </ul>
           <ul>
             <br />
-            <li><a href="/trabalho">💼 Trabalho</a></li>
-            <li><a href="/amigos">👫 Amigos</a></li>
-            <li><a href="/outros">📂 Outros</a></li>
+            <li>
+              <a href="/trabalho">💼 Trabalho</a>
+            </li>
+            <li>
+              <a href="/amigos">👫 Amigos</a>
+            </li>
+            <li>
+              <a href="/outros">📂 Outros</a>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -145,7 +153,9 @@ function Familia() {
                 <h3>{contact.name}</h3>
                 <p>📞 {contact.phone}</p>
                 <p>📧 {contact.email || "—"}</p>
-                <p>📁 Categoria: <strong>{contact.category}</strong></p>
+                <p>
+                  📁 Categoria: <strong>{contact.category}</strong>
+                </p>
                 {contact.favorite && <p>⭐ Favorito</p>}
               </div>
             ))
