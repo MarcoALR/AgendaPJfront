@@ -1,16 +1,17 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './index.css';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./index.css";
 
-import Home from './pages/Home/';
-import Cadastrar from './pages/Home/cadastrar';
-import CriarContato from './pages/CriarContato';
+import Home from "./pages/Home/";
+import Cadastrar from "./pages/Home/cadastrar";
+import CriarContato from "./pages/CriarContato";
 import Contatos from "./pages/Contatos";
-import Favoritos from './pages/Favoritos';
-import Amigos from './pages/Amigos';
+import Favoritos from "./pages/Favoritos";
+import Amigos from "./pages/Amigos";
+import Familia from "./pages/Familia";
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
 
 root.render(
   <StrictMode>
@@ -22,6 +23,7 @@ root.render(
         <Route path="/contatos" element={<Contatos />} />
         <Route path="/favoritos" element={<Favoritos />} />
         <Route path="/amigos" element={<Amigos />} />
+        <Route path="/familia" element={<Familia />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
