@@ -8,7 +8,7 @@ import Cadastrar from './pages/Home/cadastrar';
 import CriarContato from './pages/CriarContato';
 import Contatos from "./pages/Contatos";
 import Favoritos from './pages/Favoritos';
-import Amigos from './pages/Home/Amigos';
+import Amigos from './pages/Amigos';
 
 const root = createRoot(document.getElementById('root'));
 
