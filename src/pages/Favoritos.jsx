@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
-import logoImg from "./assets/agendapjlogo.png";
+import agendapjLogo from "./../assets/logoagenda.png";
 
 function Favoritos() {
   const navigate = useNavigate();
@@ -55,8 +55,9 @@ function Favoritos() {
       document.body.classList.add("dark-theme");
       setTheme("dark");
     }
-  }, [navigate]);
+  }, [loadFavorites, navigate]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadFavorites = () => {
     if (!usuario || !usuario.email) {
       setFavorites([]);
@@ -97,7 +98,7 @@ function Favoritos() {
     <div className="container">
       <aside className="sidebar">
         <div className="logo">
-          <img src={logoImg} alt="Logo Agenda PJ" className="logo-img" />
+          <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
         </div>
         <h2 className="logo">⭐Favoritos Pj</h2>
         <nav>
