@@ -1,5 +1,4 @@
-// Favoritos.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
 import agendapjLogo from "./../assets/logoagenda.png";
@@ -9,6 +8,22 @@ function Favoritos() {
   const [favorites, setFavorites] = useState([]);
   const [theme, setTheme] = useState("light");
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+  const loadFavorites = useCallback(() => {
+    if (!usuario || !usuario.email) {
+      setFavorites([]);
+      return;
+    }
+
+    const data = localStorage.getItem(`agenda-contatos-${usuario.email}`);
+    if (data) {
+      const contacts = JSON.parse(data);
+      const favs = contacts.filter((c) => c.favorite);
+      setFavorites(favs);
+    } else {
+      setFavorites([]);
+    }
+  }, [usuario]);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -47,32 +62,14 @@ function Favoritos() {
     }
 
     validateToken();
-    loadFavorites();
+    loadFavorites(); 
 
-    // Load theme
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       document.body.classList.add("dark-theme");
       setTheme("dark");
     }
-  }, [loadFavorites, navigate]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const loadFavorites = () => {
-    if (!usuario || !usuario.email) {
-      setFavorites([]);
-      return;
-    }
-
-    const data = localStorage.getItem(`agenda-contatos-${usuario.email}`);
-    if (data) {
-      const contacts = JSON.parse(data);
-      const favs = contacts.filter((c) => c.favorite);
-      setFavorites(favs);
-    } else {
-      setFavorites([]);
-    }
-  };
+  }, [navigate, loadFavorites]);
 
   const handleThemeToggle = () => {
     const isDark = theme === "light";
@@ -100,29 +97,29 @@ function Favoritos() {
         <div className="logo">
           <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
         </div>
-        <h2 className="logo">⭐Favoritos Pj</h2>
+        <h2 className="logo">⭐Favoritos PJ</h2>
         <nav>
           <ul>
             <li>
-              <a href="/CriarContato">Painel 📇</a>
+              <a href="/criarcontato">Painel 📇</a>
             </li>
             <li>
-              <a href="/Contatos">Contatos 👥</a>
+              <a href="/contatos">Contatos 👥</a>
             </li>
           </ul>
           <ul>
             <br />
             <li>
-              <a href="/Familia">👨‍👩‍👧 Família</a>
+              <a href="/familia">👨‍👩‍👧 Família</a>
             </li>
             <li>
-              <a href="/Trabalho">💼 Trabalho</a>
+              <a href="/trabalho">💼 Trabalho</a>
             </li>
             <li>
-              <a href="/Amigos">👫 Amigos</a>
+              <a href="/amigos">👫 Amigos</a>
             </li>
             <li>
-              <a href="/Outros">📂 Outros</a>
+              <a href="/outros">📂 Outros</a>
             </li>
           </ul>
         </nav>
