@@ -190,10 +190,10 @@ const logout = () => {
         <nav>
           <ul>
             <li>
-              <a href="/Contatos">Contatos 👥</a>
+              <a href="/contatos">Contatos 👥</a>
             </li>
             <li>
-              <a href="/Favoritos">Favoritos ⭐</a>
+              <a href="/favoritos">Favoritos ⭐</a>
             </li>
           </ul>
           <ul>

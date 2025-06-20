@@ -19,7 +19,7 @@ root.render(
         <Route path="/cadastrar" element={<Cadastrar />} />
         <Route path="/criarcontato" element={<CriarContato />} />
         <Route path="/contatos" element={<Contatos />} />
-        <Route path="/Favoritos" element={<Favoritos />} />
+        <Route path="/favoritos" element={<Favoritos />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
