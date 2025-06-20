@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 
-import Home from './pages/Home';
+import Home from './pages/Home/';
 import Cadastrar from './pages/Home/cadastrar';
-import CriarContato from './pages/CriarContato';
+import CriarContato from './pages/CriarContato.jsx';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -15,7 +15,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cadastrar" element={<Cadastrar />} />
-        <Route path="/CriarContato" element={<CriarContato />} />
+        <Route path="/criarcontato" element={<CriarContato />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

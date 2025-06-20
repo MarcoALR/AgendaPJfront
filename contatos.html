@@ -6,20 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contatos - AgendaPJ</title>
   <link rel="icon" href="icon.png" type="image/x-icon" />
-  <meta property="agendapjsite" content="https://marcoalr.github.io/AgendaPJ/agendapjsite">
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-  <link rel="stylesheet" href="./src/styles/contatos.css"/>
-  <meta property="og:image" content="https://marcoalr.github.io/AgendaPJ/agendapjsite.jpg">
-  <meta property="og:title" content="Contatos - Agenda PJ">
-  <meta property="og:description" content="Veja seus contatos salvos no sistema Agenda PJ.">
-  <meta property="og:image" content="https://marcoalr.github.io/AgendaPJ/agendapjlogo.png">
-  <meta property="og:url" content="https://marcoalr.github.io/AgendaPJ/contatos.html">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Contatos - Agenda PJ">
-  <meta name="twitter:description" content="Veja seus contatos salvos no sistema Agenda PJ.">
-  <meta name="twitter:image" content="https://marcoalr.github.io/AgendaPJ/agendapjsite.jpg">
+  <link rel="stylesheet" href="./src/styles/favoritos.css" />
 </head>
+
 <body>
   <div class="container">
     <aside class="sidebar">
@@ -32,11 +21,15 @@
           <li><a href="/CriarContato">Painel 📇</a></li>
           <li><a href="favoritos.html">Favoritos ⭐</a></li>
         </ul>
+        <ul><br>
+          <li><a href="familia.html">👨‍👩‍👧 Família</a></li>
+          <li><a href="trabalho.html">💼 Trabalho</a></li>
+          <li><a href="amigos.html">👫 Amigos</a></li>
+          <li><a href="outros.html">📂 Outros</a></li>
+        </ul>
       </nav>
     </aside>
-    <div id="banner"></div>
     <main class="main-content">
-
       <div class="theme-toggle">
         <span>🌗</span>
         <label class="switch">
@@ -63,12 +56,15 @@
           <option value="za">Ordenar: Z → A</option>
         </select>
       </div>
-      <div id="all-contacts-container"></div>
-
+      <div class="contacts-container" id="all-contacts-container"></div>
     </main>
-    <button class="botao-topo-direita" id="logout-button">Sair</button>
+
+    <div class="usuario-info">
+      <span class="usuario-logado">👤 Usuário</span>
+      <button class="botao-topo-direita" id="logout-button">Sair</button>
+    </div>
   </div>
+
   <script src="src/services/contatos.js"></script>
 </body>
-
 </html>

@@ -5,10 +5,8 @@ import agendapjLogo from "./logoagenda.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import api from "../../services/api";
 
-function Home() {
+function Cadastrar() {
   const navigate = useNavigate();
-  const [Users, setUsers] = useState([]);
-  const [color, setColor] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState(null);
@@ -21,15 +19,12 @@ function Home() {
   const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
 
+  const [themeDark, setThemeDark] = useState(false);
+
   const inputName = useRef();
   const inputEmail = useRef();
   const inputPassword = useRef();
   const inputConfirmPassword = useRef();
-
-  async function getUsers() {
-    const usersFrmApi = await api.get("/usuarios");
-    setUsers(usersFrmApi.data);
-  }
 
   function showMessage(text, type = "sucesso") {
     setMessage({ text, type });
@@ -57,7 +52,7 @@ function Home() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (value && !emailRegex.test(value)) {
-      setEmailHint("⚠️E-mail inválido: exemplo@dominio.com");
+      setEmailHint("⚠️ E-mail inválido: exemplo@dominio.com");
     } else {
       setEmailHint("");
     }
@@ -108,29 +103,44 @@ function Home() {
     try {
       await api.post("/usuarios", { name, email, password });
       showMessage("✅ Usuário criado com sucesso!", "sucesso");
-      getUsers();
 
       setTimeout(() => {
         navigate("/");
-      },900);
+      }, 900);
     } catch (error) {
-      showMessage("❌ Erro ao criar usuário.", "erro");
+      showMessage("❌ Erro ao criar usuário / E-mail já cadastrado ❌", "erro");
       console.error(error);
     }
   }
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  function handleThemeToggle() {
+    const newTheme = !themeDark;
+    setThemeDark(newTheme);
+    localStorage.setItem("themeDark", newTheme ? "true" : "false");
+  }
 
   useEffect(() => {
-    document.body.style.backgroundColor = color || "";
-  }, [color]);
+    const savedTheme = localStorage.getItem("themeDark") === "true";
+    setThemeDark(savedTheme);
+  }, []);
 
   return (
     <>
-      <div className="banner">
-        <h2>👥 Bem-vindo à Agenda PJ 👥</h2>
+      <div className={`banner ${themeDark ? "dark" : ""}`}>
+        <div className="theme-toggle">
+          <span>🌗</span>
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={themeDark}
+              onChange={handleThemeToggle}
+            />
+            <span className="slider"></span>
+          </label>
+          <span>🌙</span>
+        </div>
+
+        <h2>👥 Crie sua conta na Agenda PJ 👥</h2>
 
         {message && (
           <div className={`feedback-message ${message.type}`}>
@@ -141,7 +151,6 @@ function Home() {
         <div className="login-container">
           <div className="input-container">
             <input
-              style={{ color: "#333" }}
               type="text"
               value={nameValue}
               onChange={(e) => setNameValue(e.target.value)}
@@ -152,10 +161,11 @@ function Home() {
             />
             <label>Nome</label>
           </div>
+
           {emailHint && <p className="input-hint">{emailHint}</p>}
+
           <div className="input-container">
             <input
-              style={{ color: "#333" }}
               type="email"
               value={emailValue}
               onChange={handleEmailInput}
@@ -169,14 +179,11 @@ function Home() {
 
           <div className="input-container password-container">
             <input
-              style={{ color: "#333" }}
               type={showPassword ? "text" : "password"}
               value={passwordValue}
               onChange={handlePasswordInput}
               ref={inputPassword}
-              className={`password-input ${
-                passwordValue ? "has-content" : ""
-              }`}
+              className={`password-input ${passwordValue ? "has-content" : ""}`}
               placeholder=" "
               required
             />
@@ -188,9 +195,9 @@ function Home() {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
+
           <div className="input-container">
             <input
-              style={{ color: "#333" }}
               type={showConfirmPassword ? "text" : "password"}
               value={confirmPasswordValue}
               onChange={(e) => setConfirmPasswordValue(e.target.value)}
@@ -223,27 +230,16 @@ function Home() {
               </p>
             </>
           )}
+
           <button onClick={createUsers}>Criar a conta</button>
         </div>
 
-        <footer>
-          <div id="Marco">
-            <input
-              className="interacao"
-              type="text"
-              placeholder="Digite uma cor em inglês ou #FF0000"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-            />
-          </div>
-        </footer>
-
-        <div className="logo">
+        <footer className="logo">
           <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
-        </div>
+        </footer>
       </div>
     </>
   );
 }
 
-export default Home;
+export default Cadastrar;

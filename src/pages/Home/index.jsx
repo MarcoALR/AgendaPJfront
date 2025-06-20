@@ -6,11 +6,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./style.css";
 
 function Home() {
-  const [email, setEmail] = useState("");
+  const [loginValue, setLoginValue] = useState(""); 
   const [password, setPassword] = useState("");
-  const [color, setColor] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [themeDark, setThemeDark] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,40 +18,42 @@ function Home() {
     import.meta.env.VITE_API_URL || "https://apiusuarios-afl5.onrender.com";
 
   useEffect(() => {
-    document.body.style.backgroundColor = color || "";
-  }, [color]);
-
-  useEffect(() => {
     const usuario = localStorage.getItem("usuarioLogado");
     const accessToken = localStorage.getItem("accessToken");
+
+    const savedTheme = localStorage.getItem("themeDark") === "true";
+    setThemeDark(savedTheme);
+
     if (usuario && accessToken) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-     window.location.href = "/criarcontato.html";
+      navigate("/criarcontato");
     }
   }, [navigate]);
 
+  const handleThemeToggle = () => {
+    const newTheme = !themeDark;
+    setThemeDark(newTheme);
+    localStorage.setItem("themeDark", newTheme ? "true" : "false");
+  };
+
   const login = async () => {
-    if (!email || !password) {
+    if (!loginValue || !password) {
       setErrorMsg("⚠️ Preencha todos os campos.");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      setErrorMsg("⚠️ Insira um @ / e-mail válido.");
       return;
     }
 
     try {
       const response = await axios.post(`${API_URL}/login`, {
-        email,
+        login: loginValue,
         password,
       });
-  
+
       const { accessToken, refreshToken, usuario } = response.data;
 
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+      localStorage.setItem(
+        "usuarioLogado",
+        JSON.stringify({ name: usuario.name, email: usuario.email })
+      );
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
@@ -59,10 +61,10 @@ function Home() {
       setErrorMsg("");
 
       navigate("/criarcontato");
-      setTimeout(() => window.location.reload(), 300);
+
     } catch (error) {
       if (error.response?.status === 401) {
-        setErrorMsg("⚠️ Email ou senha incorretos.");
+        setErrorMsg("⚠️ Usuário ou senha incorretos.");
       } else if (error.message === "Network Error") {
         setErrorMsg("⚠️ Servidor indisponível. Verifique sua conexão.");
       } else {
@@ -114,27 +116,36 @@ function Home() {
   );
 
   return (
-    <div className="banner">
-      <h2>👥 Bem - vindo à Agenda PJ 👥</h2>
-
+    <div className={`banner ${themeDark ? "dark" : ""}`}>
+      <div className="theme-toggle">
+        <span>🌗</span>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={themeDark}
+            onChange={handleThemeToggle}
+          />
+          <span className="slider"></span>
+        </label>
+        <span>🌙</span>
+      </div>
+      <h2>👥 Bem-vindo à Agenda PJ 👥</h2>
       <div className="login-container">
         <div className="input-container">
           <input
-            style={{ color: "#333" }}
-            type="email"
-            id="email"
+            type="text"
+            id="login"
             placeholder=" "
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={email ? "has-content" : ""}
+            value={loginValue}
+            onChange={(e) => setLoginValue(e.target.value)}
+            className={loginValue ? "has-content" : ""}
           />
-          <label htmlFor="email">E-mail</label>
+          <label htmlFor="login">Nome ou E-mail</label>
         </div>
 
         <div className="input-container">
           <input
-            style={{ color: "#333" }}
             type={showPassword ? "text" : "password"}
             id="senha"
             placeholder=" "
@@ -147,14 +158,6 @@ function Home() {
           <span
             onClick={() => setShowPassword(!showPassword)}
             className="password-toggle-icon"
-            style={{
-              position: "absolute",
-              right: "12px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              color: "#aaa",
-            }}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
@@ -167,21 +170,9 @@ function Home() {
         {errorMsg && <div className="error">{errorMsg}</div>}
       </div>
 
-      <footer>
-        <div id="Marco">
-          <input
-            className="interacao"
-            type="text"
-            placeholder="Digite uma cor em inglês ou #FF0000"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          />
-        </div>
-      </footer>
-
-      <div className="logo">
+      <footer className="logo">
         <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
-      </div>
+      </footer>
     </div>
   );
 }

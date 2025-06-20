@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./../styles/criarcontato.css";
 import agendapjLogo from "./../assets/logoagenda.png";
 import axios from "axios";
+import { CgEnter } from "react-icons/cg";
 
 function CriarContato() {
   const navigate = useNavigate();
@@ -17,8 +18,8 @@ function CriarContato() {
   const [editingId, setEditingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [usuarioLogado, setUsuarioLogado] = useState("");
 
-  // Verifica token na API
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -30,11 +31,24 @@ function CriarContato() {
 
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    // tenta carregar algo da API (ex: lista de usuários)
     axios
       .get(`${API_URL}/usuarios`)
       .then(() => {
         console.log("✅ Sessão válida, usuário autenticado");
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+        if (usuario && usuario.name) {
+          setUsuarioLogado(usuario.name);
+        }
+
+        if (usuario && usuario.email) {
+          const savedContacts = JSON.parse(localStorage.getItem(`agenda-contatos-${usuario.email}`)) || [];
+          setContacts(savedContacts);
+        }
+
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+          setThemeDark(true);
+        }
       })
       .catch((error) => {
         console.error("❌ Erro de autenticação:", error);
@@ -45,22 +59,12 @@ function CriarContato() {
       });
   }, [navigate]);
 
-  // Carregar contatos + tema
-  useEffect(() => {
-    const savedContacts =
-      JSON.parse(localStorage.getItem("agenda-contatos")) || [];
-    setContacts(savedContacts);
-
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setThemeDark(true);
-    }
-  }, []);
-
-  // Salvar contatos
   const saveContacts = (newContacts) => {
     setContacts(newContacts);
-    localStorage.setItem("agenda-contatos", JSON.stringify(newContacts));
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (usuario && usuario.email) {
+      localStorage.setItem(`agenda-contatos-${usuario.email}`, JSON.stringify(newContacts));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -165,13 +169,16 @@ function CriarContato() {
     localStorage.setItem("theme", newThemeDark ? "dark" : "light");
   };
 
-  const logout = () => {
+const logout = () => {
+  const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
+  if (confirmLogout) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("usuarioLogado");
     console.log("Logout realizado");
     alert("Você saiu da sua conta.");
     navigate("/");
-  };
+  }
+};
 
   return (
     <div className={`container ${themeDark ? "dark-theme" : ""}`}>
@@ -189,24 +196,58 @@ function CriarContato() {
               <a href="favoritos.html">Favoritos ⭐</a>
             </li>
           </ul>
+          <ul>
+            <br />
+            <li>
+              <a href="familia.html">👨‍👩‍👧 Família</a>
+            </li>
+            <li>
+              <a href="trabalho.html">💼 Trabalho</a>
+            </li>
+            <li>
+              <a href="amigos.html">👫 Amigos</a>
+            </li>
+            <li>
+              <a href="outros.html">📂 Outros</a>
+            </li>
+          </ul>
         </nav>
       </aside>
 
       <main className="main-content">
-        <div className="theme-toggle">
-          <span>🌗</span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={themeDark}
-              onChange={handleThemeToggle}
-            />
-            <span className="slider"></span>
-          </label>
-          <span>🌙</span>
-        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <center></center>
+          <div className="theme-toggle">
+            <span>🌗</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={themeDark}
+                onChange={handleThemeToggle}
+              />
+              <span className="slider"></span>
+            </label>
+            <span>🌙</span>
+          </div>
 
-        <br />
+          <div className="usuario-info">
+            <span className="usuario-logado">👤 {usuarioLogado}</span>
+            <button
+              className="botao-topo-direita"
+              id="logout-button"
+              onClick={logout}
+            >
+              Sair
+            </button>
+          </div>
+        </div>
 
         <section id="app">
           <h2>Contatos</h2>
@@ -276,14 +317,6 @@ function CriarContato() {
             ))}
           </div>
         </section>
-
-        <button
-          className="botao-topo-direita"
-          id="logout-button"
-          onClick={logout}
-        >
-          Sair
-        </button>
       </main>
     </div>
   );
