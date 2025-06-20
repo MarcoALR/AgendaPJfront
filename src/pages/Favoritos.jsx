@@ -1,7 +1,7 @@
 // Favoritos.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/favoritos.css";
+import "./../styles/favoritos.css";
 import logoImg from "./assets/agendapjlogo.png";
 
 function Favoritos() {
