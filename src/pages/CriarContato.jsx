@@ -190,25 +190,25 @@ const logout = () => {
         <nav>
           <ul>
             <li>
-              <a href="contatos.html">Contatos 👥</a>
+              <a href="/contatos.html">Contatos 👥</a>
             </li>
             <li>
-              <a href="favoritos.html">Favoritos ⭐</a>
+              <a href="/favoritos.html">Favoritos ⭐</a>
             </li>
           </ul>
           <ul>
             <br />
             <li>
-              <a href="familia.html">👨‍👩‍👧 Família</a>
+              <a href="/familia.html">👨‍👩‍👧 Família</a>
             </li>
             <li>
-              <a href="trabalho.html">💼 Trabalho</a>
+              <a href="/trabalho.html">💼 Trabalho</a>
             </li>
             <li>
-              <a href="amigos.html">👫 Amigos</a>
+              <a href="/amigos.html">👫 Amigos</a>
             </li>
             <li>
-              <a href="outros.html">📂 Outros</a>
+              <a href="/outros.html">📂 Outros</a>
             </li>
           </ul>
         </nav>
