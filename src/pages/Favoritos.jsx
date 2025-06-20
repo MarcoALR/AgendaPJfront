@@ -26,50 +26,56 @@ function Favoritos() {
   }, [usuario]);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
 
-    if (!token) {
-      alert("⚠️ Você precisa estar autenticado para acessar esta página.");
-      navigate("/");
-      return;
-    }
+  if (!token) {
+    alert("⚠️ Você precisa estar autenticado para acessar esta página.");
+    navigate("/");
+    return;
+  }
 
-    async function validateToken() {
-      try {
-        const response = await fetch(
-          "https://apiusuarios-afl5.onrender.com/validate-token",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Sessão inválida ou expirada");
+  async function validateTokenAndLoadData() {
+    try {
+      const response = await fetch(
+        "https://apiusuarios-afl5.onrender.com/validate-token",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
+      );
 
-        console.log("✅ Sessão válida, usuário autenticado");
-      } catch (error) {
-        console.error("❌ Erro de autenticação:", error);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("usuarioLogado");
-        alert("⚠️ Sessão expirada. Por favor, faça o login.");
-        navigate("/");
+      if (!response.ok) {
+        throw new Error("Sessão inválida ou expirada");
       }
-    }
 
-    validateToken();
-    loadFavorites(); 
+      console.log("✅ Sessão válida, usuário autenticado");
 
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark-theme");
-      setTheme("dark");
+      // Só carrega favoritos se o token estiver válido:
+      loadFavorites();
+
+    } catch (error) {
+      console.error("❌ Erro de autenticação:", error);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("usuarioLogado");
+      alert("⚠️ Sessão expirada. Por favor, faça o login.");
+      navigate("/");
     }
-  }, [navigate, loadFavorites]);
+  }
+
+  validateTokenAndLoadData();
+
+  // Load theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-theme");
+    setTheme("dark");
+  }
+}, [navigate]);
+
+
 
   const handleThemeToggle = () => {
     const isDark = theme === "light";
@@ -77,6 +83,7 @@ function Favoritos() {
     document.body.classList.toggle("dark-theme", isDark);
     localStorage.setItem("theme", isDark ? "dark" : "light");
   };
+
 
   const handleLogout = () => {
     const confirmLogout = window.confirm(
