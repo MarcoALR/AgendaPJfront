@@ -14,7 +14,6 @@ function Favoritos() {
       setFavorites([]);
       return;
     }
-
     const data = localStorage.getItem(`agenda-contatos-${usuario.email}`);
     if (data) {
       const contacts = JSON.parse(data);
@@ -24,7 +23,6 @@ function Favoritos() {
       setFavorites([]);
     }
   }, [usuario]);
-
   useEffect(() => {
   const token = localStorage.getItem("accessToken");
 
@@ -46,14 +44,10 @@ function Favoritos() {
           },
         }
       );
-
       if (!response.ok) {
         throw new Error("Sessão inválida ou expirada");
       }
-
       console.log("✅ Sessão válida, usuário autenticado");
-
-      // Só carrega favoritos se o token estiver válido:
       loadFavorites();
 
     } catch (error) {
@@ -64,10 +58,7 @@ function Favoritos() {
       navigate("/");
     }
   }
-
   validateTokenAndLoadData();
-
-  // Load theme
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
     document.body.classList.add("dark-theme");

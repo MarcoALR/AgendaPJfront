@@ -8,6 +8,7 @@ import Cadastrar from './pages/Home/cadastrar';
 import CriarContato from './pages/CriarContato';
 import Contatos from "./pages/Contatos";
 import Favoritos from './pages/Favoritos';
+import Amigos from './pages/Home/Amigos';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -20,6 +21,7 @@ root.render(
         <Route path="/criarcontato" element={<CriarContato />} />
         <Route path="/contatos" element={<Contatos />} />
         <Route path="/favoritos" element={<Favoritos />} />
+        <Route path="/amigos" element={<Amigos />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
