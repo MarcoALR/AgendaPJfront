@@ -10,6 +10,8 @@ import Contatos from "./pages/Contatos";
 import Favoritos from "./pages/Favoritos";
 import Amigos from "./pages/Amigos";
 import Familia from "./pages/Familia";
+import Outros from "./pages/Outros";
+import Trabalho from "./pages/Trabalho";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -24,6 +26,8 @@ root.render(
         <Route path="/favoritos" element={<Favoritos />} />
         <Route path="/amigos" element={<Amigos />} />
         <Route path="/familia" element={<Familia />} />
+        <Route path="/outros" element={<Outros />} />
+        <Route path="/trabalho" element={<Trabalho />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
