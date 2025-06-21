@@ -113,28 +113,40 @@ function Cadastrar() {
 
       if (token) {
         try {
-        await api.post(
+     await api.post(
   "/enviar-email",
   {
     to: email,
     subject: "Bem-vindo ao Agenda PJ!",
     message: `
-      <div style="font-family: Arial, sans-serif; color: #333;">
-        <div style="max-width: 600px; margin: auto; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-          <div style="background-color: #0078d7; padding: 20px; text-align: center;">
-            <img src="https://seudominio.com/path/to/agendapjlogo.png" alt="Agenda PJ" style="max-height: 60px; margin-bottom: 10px;" />
-            <h1 style="color: #fff; margin: 0; font-size: 24px;">Bem-vindo ao Agenda PJ!</h1>
+      <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
+        <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <div style="background-color: #2c3e50; padding: 20px; text-align: center;">
+            <img src="https://seu-dominio.com/agendapjlogo.png" alt="Agenda PJ" style="max-height: 60px; margin-bottom: 10px;" />
+            <h1 style="color: #ecf0f1; margin: 0; font-size: 24px;">Seja bem-vindo ao Agenda PJ!</h1>
           </div>
-          <div style="padding: 20px; background-color: #fff;">
-            <p>Olá, <strong>${name}</strong>,</p>
-            <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>. Agora você pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
-            <p>Estamos felizes em ter você conosco e esperamos que o Agenda PJ facilite a organização dos seus contatos e compromissos.</p>
+          <div style="padding: 20px; color: #333333;">
+            <p style="font-size: 16px;">Olá, <strong>${name}</strong>,</p>
+            <p style="font-size: 16px;">
+              Seu cadastro foi realizado com sucesso na plataforma <strong>Agenda PJ</strong>!
+            </p>
+            <p style="font-size: 16px;">
+              Agora você pode acessar o sistema utilizando seu e-mail e a senha cadastrada.
+            </p>
+            <p style="font-size: 16px;">
+              Estamos muito felizes em ter você conosco e esperamos que o <strong>Agenda PJ</strong> facilite sua organização e produtividade!
+            </p>
+            <div style="margin: 30px 0; text-align: center;">
+              <a href="https://agenda-pj.vercel.app" target="_blank" style="background-color: #34495e; color: #fff; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                Acessar Agenda PJ
+              </a>
+            </div>
             <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;">
-            <p style="font-size: 14px; color: #777;">
+            <p style="font-size: 13px; color: #888;">
               Caso você não tenha solicitado este cadastro, por favor, ignore este e-mail.
             </p>
           </div>
-          <div style="background-color: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; color: #aaa;">
+          <div style="background-color: #ecf0f1; padding: 10px; text-align: center; font-size: 12px; color: #7f8c8d;">
             &copy; ${new Date().getFullYear()} Agenda PJ. Todos os direitos reservados.
           </div>
         </div>
@@ -147,6 +159,7 @@ function Cadastrar() {
     },
   }
 );
+
 
         } catch (emailError) {
           console.warn("❌ Falha ao enviar o e-mail de boas-vindas", emailError);
