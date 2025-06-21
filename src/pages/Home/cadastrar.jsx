@@ -51,12 +51,7 @@ function Cadastrar() {
     inputEmail.current.value = value;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (value && !emailRegex.test(value)) {
-      setEmailHint("⚠️ E-mail inválido: exemplo@dominio.com");
-    } else {
-      setEmailHint("");
-    }
+    setEmailHint(value && !emailRegex.test(value) ? "⚠️ E-mail inválido: exemplo@dominio.com" : "");
   }
 
   function handlePasswordInput(e) {
@@ -86,19 +81,13 @@ function Cadastrar() {
     }
 
     if (!senhaRegex.test(password)) {
-      showMessage(
-        "⚠️ A senha deve conter no mínimo 8 caracteres, incluindo letras e números.",
-        "erro"
-      );
+      showMessage("⚠️ A senha deve conter no mínimo 8 caracteres, incluindo letras e números.", "erro");
       setIsLoading(false);
       return;
     }
 
     if (passwordStrength === "Fraca") {
-      showMessage(
-        "⚠️ A senha está fraca. Use letras, números e símbolos para torná-la mais segura.",
-        "erro"
-      );
+      showMessage("⚠️ A senha está fraca. Use letras, números e símbolos.", "erro");
       setIsLoading(false);
       return;
     }
@@ -110,31 +99,45 @@ function Cadastrar() {
     }
 
     try {
-     await api.post("/usuarios", { name, email, password });
-      showMessage("✅ Usuário criado com sucesso!", "sucesso");
-      await api.post("/enviar-email", {
-        to: email,
-        subject: "Bem-vindo ao Agenda PJ!",
-        message: `
-          <h2>Olá, ${name}!</h2>
-          <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>.</p>
-          <p>Agora você já pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
-        `,
+      await api.post("/usuarios", { name, email, password });
+
+      const loginResponse = await api.post("/login", {
+        login: email,
+        password: password,
       });
+
+      const accessToken = loginResponse.data.accessToken;
+
+   
+      await api.post(
+        "/enviar-email",
+        {
+          to: email,
+          subject: "Bem-vindo ao Agenda PJ!",
+          message: `
+            <h2>Olá, ${name}!</h2>
+            <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>.</p>
+            <p>Agora você já pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
+          `,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      showMessage("✅ Usuário criado com sucesso!", "sucesso");
 
       setTimeout(() => {
         navigate("/");
-      }, 900);
+      }, 1000);
     } catch (error) {
       if (error.response?.status === 409) {
         showMessage("❌ E-mail já cadastrado ❌", "erro");
       } else {
-        showMessage(
-          "❌ Erro ao criar usuário. Tente novamente mais tarde. ❌",
-          "erro"
-        );
+        showMessage("❌ Erro ao criar usuário. Tente novamente mais tarde. ❌", "erro");
       }
-
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -158,11 +161,7 @@ function Cadastrar() {
         <div className="theme-toggle">
           <span>🌗</span>
           <label className="switch">
-            <input
-              type="checkbox"
-              checked={themeDark}
-              onChange={handleThemeToggle}
-            />
+            <input type="checkbox" checked={themeDark} onChange={handleThemeToggle} />
             <span className="slider"></span>
           </label>
           <span>🌙</span>
@@ -170,11 +169,7 @@ function Cadastrar() {
 
         <h2>👥 Crie sua conta na Agenda PJ 👥</h2>
 
-        {message && (
-          <div className={`feedback-message ${message.type}`}>
-            {message.text}
-          </div>
-        )}
+        {message && <div className={`feedback-message ${message.type}`}>{message.text}</div>}
 
         <div className="login-container">
           <div className="input-container">
@@ -216,10 +211,7 @@ function Cadastrar() {
               required
             />
             <label>Senha</label>
-            <span
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="password-toggle-icon"
-            >
+            <span onClick={() => setShowPassword((prev) => !prev)} className="password-toggle-icon">
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
@@ -230,17 +222,12 @@ function Cadastrar() {
               value={confirmPasswordValue}
               onChange={(e) => setConfirmPasswordValue(e.target.value)}
               ref={inputConfirmPassword}
-              className={`password-input ${
-                confirmPasswordValue ? "has-content" : ""
-              }`}
+              className={`password-input ${confirmPasswordValue ? "has-content" : ""}`}
               placeholder=" "
               required
             />
             <label>Confirmar Senha</label>
-            <span
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="password-toggle-icon"
-            >
+            <span onClick={() => setShowConfirmPassword((prev) => !prev)} className="password-toggle-icon">
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
@@ -248,14 +235,9 @@ function Cadastrar() {
           {passwordStrength && (
             <>
               <div className="strength-bar">
-                <div
-                  className={`bar-inner ${passwordStrength.toLowerCase()}`}
-                  style={{ width: `${strengthPercent}%` }}
-                ></div>
+                <div className={`bar-inner ${passwordStrength.toLowerCase()}`} style={{ width: `${strengthPercent}%` }}></div>
               </div>
-              <p className={`senha-${passwordStrength.toLowerCase()}`}>
-                Força da senha: {passwordStrength}
-              </p>
+              <p className={`senha-${passwordStrength.toLowerCase()}`}>Força da senha: {passwordStrength}</p>
             </>
           )}
 
