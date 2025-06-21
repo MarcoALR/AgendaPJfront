@@ -107,7 +107,7 @@ function Cadastrar() {
           password,
         });
         token = loginResponse.data.accessToken;
-      } catch (loginError) {
+      } catch {
         console.warn("⚠️ Login falhou após cadastro.");
       }
 
