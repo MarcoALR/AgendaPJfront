@@ -6,7 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./style.css";
 
 function Home() {
-  const [loginValue, setLoginValue] = useState(""); 
+  const [loginValue, setLoginValue] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +15,7 @@ function Home() {
   const navigate = useNavigate();
 
   const API_URL =
-    import.meta.env.VITE_API_URL || "https://apiusuariospj.onrender.com/login";
+    import.meta.env.VITE_API_URL || "https://apiusuariospj.onrender.com";
 
   useEffect(() => {
     const usuario = localStorage.getItem("usuarioLogado");
@@ -61,7 +61,6 @@ function Home() {
       setErrorMsg("");
 
       navigate("/criarcontato");
-
     } catch (error) {
       if (error.response?.status === 401) {
         setErrorMsg("⚠️ Usuário ou senha incorretos.");
@@ -76,7 +75,7 @@ function Home() {
   const irParaCadastro = () => {
     navigate("/cadastrar");
   };
-
+  
   axios.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -91,6 +90,7 @@ function Home() {
           navigate("/");
           return Promise.reject(error);
         }
+
         try {
           const res = await axios.post(`${API_URL}/refresh-token`, {
             refreshToken,
@@ -101,7 +101,9 @@ function Home() {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${newAccessToken}`;
-          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          originalRequest.headers[
+            "Authorization"
+          ] = `Bearer ${newAccessToken}`;
 
           return axios(originalRequest);
         } catch (refreshError) {
