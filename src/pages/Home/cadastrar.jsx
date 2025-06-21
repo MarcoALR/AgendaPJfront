@@ -110,8 +110,17 @@ function Cadastrar() {
     }
 
     try {
-      await api.post("/usuarios", { name, email, password });
+     await api.post("/usuarios", { name, email, password });
       showMessage("✅ Usuário criado com sucesso!", "sucesso");
+      await api.post("/enviar-email", {
+        to: email,
+        subject: "Bem-vindo ao Agenda PJ!",
+        message: `
+          <h2>Olá, ${name}!</h2>
+          <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>.</p>
+          <p>Agora você já pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
+        `,
+      });
 
       setTimeout(() => {
         navigate("/");
