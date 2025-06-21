@@ -13,6 +13,7 @@ function Cadastrar() {
   const [passwordStrength, setPasswordStrength] = useState("");
   const [strengthPercent, setStrengthPercent] = useState(0);
   const [emailHint, setEmailHint] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [nameValue, setNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -66,6 +67,10 @@ function Cadastrar() {
   }
 
   async function createUsers() {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     const name = inputName.current.value;
     const email = inputEmail.current.value;
     const password = inputPassword.current.value;
@@ -76,6 +81,7 @@ function Cadastrar() {
 
     if (!emailRegex.test(email)) {
       showMessage("⚠️ Insira um e-mail válido!", "erro");
+      setIsLoading(false);
       return;
     }
 
@@ -84,6 +90,7 @@ function Cadastrar() {
         "⚠️ A senha deve conter no mínimo 8 caracteres, incluindo letras e números.",
         "erro"
       );
+      setIsLoading(false);
       return;
     }
 
@@ -92,11 +99,13 @@ function Cadastrar() {
         "⚠️ A senha está fraca. Use letras, números e símbolos para torná-la mais segura.",
         "erro"
       );
+      setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
       showMessage("⚠️ As senhas não coincidem!", "erro");
+      setIsLoading(false);
       return;
     }
 
@@ -118,6 +127,8 @@ function Cadastrar() {
       }
 
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -239,7 +250,9 @@ function Cadastrar() {
             </>
           )}
 
-          <button onClick={createUsers}>Criar a conta</button>
+          <button onClick={createUsers} disabled={isLoading}>
+            {isLoading ? "Carregando..." : "Criar a conta"}
+          </button>
         </div>
 
         <footer className="logo">
