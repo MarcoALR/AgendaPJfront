@@ -113,23 +113,41 @@ function Cadastrar() {
 
       if (token) {
         try {
-          await api.post(
-            "/enviar-email",
-            {
-              to: email,
-              subject: "Bem-vindo ao Agenda PJ!",
-              message: `
-                <h2>Olá, ${name}!</h2>
-                <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>.</p>
-                <p>Agora você já pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
-              `,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+        await api.post(
+  "/enviar-email",
+  {
+    to: email,
+    subject: "Bem-vindo ao Agenda PJ!",
+    message: `
+      <div style="font-family: Arial, sans-serif; color: #333;">
+        <div style="max-width: 600px; margin: auto; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+          <div style="background-color: #0078d7; padding: 20px; text-align: center;">
+            <img src="https://seudominio.com/path/to/agendapjlogo.png" alt="Agenda PJ" style="max-height: 60px; margin-bottom: 10px;" />
+            <h1 style="color: #fff; margin: 0; font-size: 24px;">Bem-vindo ao Agenda PJ!</h1>
+          </div>
+          <div style="padding: 20px; background-color: #fff;">
+            <p>Olá, <strong>${name}</strong>,</p>
+            <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>. Agora você pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
+            <p>Estamos felizes em ter você conosco e esperamos que o Agenda PJ facilite a organização dos seus contatos e compromissos.</p>
+            <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;">
+            <p style="font-size: 14px; color: #777;">
+              Caso você não tenha solicitado este cadastro, por favor, ignore este e-mail.
+            </p>
+          </div>
+          <div style="background-color: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; color: #aaa;">
+            &copy; ${new Date().getFullYear()} Agenda PJ. Todos os direitos reservados.
+          </div>
+        </div>
+      </div>
+    `,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
         } catch (emailError) {
           console.warn("❌ Falha ao enviar o e-mail de boas-vindas", emailError);
         }
