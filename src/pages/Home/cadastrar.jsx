@@ -63,7 +63,6 @@ function Cadastrar() {
 
   async function createUsers() {
     if (isLoading) return;
-
     setIsLoading(true);
 
     const name = inputName.current.value;
@@ -101,37 +100,43 @@ function Cadastrar() {
     try {
       await api.post("/usuarios", { name, email, password });
 
-      const loginResponse = await api.post("/login", {
-        login: email,
-        password: password,
-      });
+      let token = null;
+      try {
+        const loginResponse = await api.post("/login", {
+          login: email,
+          password,
+        });
+        token = loginResponse.data.accessToken;
+      } catch (loginError) {
+        console.warn("⚠️ Login falhou após cadastro.");
+      }
 
-      const accessToken = loginResponse.data.accessToken;
-
-   
-      await api.post(
-        "/enviar-email",
-        {
-          to: email,
-          subject: "Bem-vindo ao Agenda PJ!",
-          message: `
-            <h2>Olá, ${name}!</h2>
-            <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>.</p>
-            <p>Agora você já pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
-          `,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+      if (token) {
+        try {
+          await api.post(
+            "/enviar-email",
+            {
+              to: email,
+              subject: "Bem-vindo ao Agenda PJ!",
+              message: `
+                <h2>Olá, ${name}!</h2>
+                <p>Seu cadastro foi realizado com sucesso no sistema <strong>Agenda PJ</strong>.</p>
+                <p>Agora você já pode acessar a plataforma usando seu e-mail e senha cadastrados.</p>
+              `,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } catch (emailError) {
+          console.warn("❌ Falha ao enviar o e-mail de boas-vindas", emailError);
         }
-      );
+      }
 
       showMessage("✅ Usuário criado com sucesso!", "sucesso");
-
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      setTimeout(() => navigate("/"), 1000);
     } catch (error) {
       if (error.response?.status === 409) {
         showMessage("❌ E-mail já cadastrado ❌", "erro");
@@ -156,101 +161,99 @@ function Cadastrar() {
   }, []);
 
   return (
-    <>
-      <div className={`banner ${themeDark ? "dark" : ""}`}>
-        <div className="theme-toggle">
-          <span>🌗</span>
-          <label className="switch">
-            <input type="checkbox" checked={themeDark} onChange={handleThemeToggle} />
-            <span className="slider"></span>
-          </label>
-          <span>🌙</span>
-        </div>
-
-        <h2>👥 Crie sua conta na Agenda PJ 👥</h2>
-
-        {message && <div className={`feedback-message ${message.type}`}>{message.text}</div>}
-
-        <div className="login-container">
-          <div className="input-container">
-            <input
-              type="text"
-              value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
-              ref={inputName}
-              className={nameValue ? "has-content" : ""}
-              placeholder=" "
-              required
-            />
-            <label>Nome</label>
-          </div>
-
-          {emailHint && <p className="input-hint">{emailHint}</p>}
-
-          <div className="input-container">
-            <input
-              type="email"
-              value={emailValue}
-              onChange={handleEmailInput}
-              ref={inputEmail}
-              className={emailValue ? "has-content" : ""}
-              placeholder=" "
-              required
-            />
-            <label>E-mail</label>
-          </div>
-
-          <div className="input-container password-container">
-            <input
-              type={showPassword ? "text" : "password"}
-              value={passwordValue}
-              onChange={handlePasswordInput}
-              ref={inputPassword}
-              className={`password-input ${passwordValue ? "has-content" : ""}`}
-              placeholder=" "
-              required
-            />
-            <label>Senha</label>
-            <span onClick={() => setShowPassword((prev) => !prev)} className="password-toggle-icon">
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
-
-          <div className="input-container">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              value={confirmPasswordValue}
-              onChange={(e) => setConfirmPasswordValue(e.target.value)}
-              ref={inputConfirmPassword}
-              className={`password-input ${confirmPasswordValue ? "has-content" : ""}`}
-              placeholder=" "
-              required
-            />
-            <label>Confirmar Senha</label>
-            <span onClick={() => setShowConfirmPassword((prev) => !prev)} className="password-toggle-icon">
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
-
-          {passwordStrength && (
-            <>
-              <div className="strength-bar">
-                <div className={`bar-inner ${passwordStrength.toLowerCase()}`} style={{ width: `${strengthPercent}%` }}></div>
-              </div>
-              <p className={`senha-${passwordStrength.toLowerCase()}`}>Força da senha: {passwordStrength}</p>
-            </>
-          )}
-
-          <button onClick={createUsers} disabled={isLoading}>
-            {isLoading ? "Carregando..." : "Criar a conta"}
-          </button>
-        </div>
-
-        <footer className="logo">
-          <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
-        </footer>
+    <div className={`banner ${themeDark ? "dark" : ""}`}>
+      <div className="theme-toggle">
+        <span>🌗</span>
+        <label className="switch">
+          <input type="checkbox" checked={themeDark} onChange={handleThemeToggle} />
+          <span className="slider"></span>
+        </label>
+        <span>🌙</span>
       </div>
-    </>
+
+      <h2>👥 Crie sua conta na Agenda PJ 👥</h2>
+
+      {message && <div className={`feedback-message ${message.type}`}>{message.text}</div>}
+
+      <div className="login-container">
+        <div className="input-container">
+          <input
+            type="text"
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
+            ref={inputName}
+            className={nameValue ? "has-content" : ""}
+            placeholder=" "
+            required
+          />
+          <label>Nome</label>
+        </div>
+
+        {emailHint && <p className="input-hint">{emailHint}</p>}
+
+        <div className="input-container">
+          <input
+            type="email"
+            value={emailValue}
+            onChange={handleEmailInput}
+            ref={inputEmail}
+            className={emailValue ? "has-content" : ""}
+            placeholder=" "
+            required
+          />
+          <label>E-mail</label>
+        </div>
+
+        <div className="input-container password-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={passwordValue}
+            onChange={handlePasswordInput}
+            ref={inputPassword}
+            className={`password-input ${passwordValue ? "has-content" : ""}`}
+            placeholder=" "
+            required
+          />
+          <label>Senha</label>
+          <span onClick={() => setShowPassword((prev) => !prev)} className="password-toggle-icon">
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
+        <div className="input-container">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            value={confirmPasswordValue}
+            onChange={(e) => setConfirmPasswordValue(e.target.value)}
+            ref={inputConfirmPassword}
+            className={`password-input ${confirmPasswordValue ? "has-content" : ""}`}
+            placeholder=" "
+            required
+          />
+          <label>Confirmar Senha</label>
+          <span onClick={() => setShowConfirmPassword((prev) => !prev)} className="password-toggle-icon">
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
+        {passwordStrength && (
+          <>
+            <div className="strength-bar">
+              <div className={`bar-inner ${passwordStrength.toLowerCase()}`} style={{ width: `${strengthPercent}%` }}></div>
+            </div>
+            <p className={`senha-${passwordStrength.toLowerCase()}`}>Força da senha: {passwordStrength}</p>
+          </>
+        )}
+
+        <button onClick={createUsers} disabled={isLoading}>
+          {isLoading ? "Carregando..." : "Criar a conta"}
+        </button>
+      </div>
+
+      <footer className="logo">
+        <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
+      </footer>
+    </div>
   );
 }
 
