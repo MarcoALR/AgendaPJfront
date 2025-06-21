@@ -132,7 +132,7 @@ function Cadastrar() {
       <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
         <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
           <div style="background-color: #2c3e50; padding: 20px; text-align: center;">
-            <img src="https://seu-dominio.com/agendapjlogo.png" alt="Agenda PJ" style="max-height: 60px; margin-bottom: 10px;" />
+            <img src="https://agenda-pj.vercel.app/agendapjlogo.png" alt="Agenda PJ" style="max-height: 60px; margin-bottom: 10px;" />
             <h1 style="color: #ecf0f1; margin: 0; font-size: 24px;">Seja bem-vindo ao Agenda PJ!</h1>
           </div>
           <div style="padding: 20px; color: #333333;">
