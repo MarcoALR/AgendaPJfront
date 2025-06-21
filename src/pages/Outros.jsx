@@ -17,7 +17,7 @@ function Outros() {
     async function validateTokenAndLoadData() {
       try {
         const response = await fetch(
-          "https://apiusuarios-afl5.onrender.com/validate-token",
+          "https://apiusuariospj.onrender.com/validate-token",
           {
             method: "GET",
             headers: {
