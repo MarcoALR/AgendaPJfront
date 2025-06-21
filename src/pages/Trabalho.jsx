@@ -111,7 +111,7 @@ function Trabalho() {
           <ul>
             <br />
             <li><a href="/familia">👨‍👩‍👧 Família</a></li>
-            <li><a href="/amigos">👫 Amigos</a></li>
+            <li><a href="/amigos">🎉 Amigos</a></li>
             <li><a href="/outros">📂 Outros</a></li>
           </ul>
         </nav>

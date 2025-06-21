@@ -110,7 +110,7 @@ function Favoritos() {
               <a href="/trabalho">💼 Trabalho</a>
             </li>
             <li>
-              <a href="/amigos">👫 Amigos</a>
+              <a href="/amigos">🎉 Amigos</a>
             </li>
             <li>
               <a href="/outros">📂 Outros</a>
