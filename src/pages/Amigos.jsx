@@ -100,7 +100,7 @@ function Amigos() {
         <div className="logo">
           <img src={agendapjLogo} alt="Logo Agenda PJ" className="logo-img" />
         </div>
-        <h2 className="logo">👫 Amigos</h2>
+        <h2 className="logo">🎉 Amigos</h2>
         <nav>
           <ul>
             <li>
