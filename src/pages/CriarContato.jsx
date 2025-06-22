@@ -175,7 +175,7 @@ function CriarContato() {
           <ul>
             <li><a href="/contatos">👥 Contatos</a></li>
             <li><a href="/favoritos">⭐ Favoritos</a></li>
-          </ul>
+          </ul><br/>
           <ul>
             <li><a href="/familia">👨‍👩‍👧 Família</a></li>
             <li><a href="/trabalho">💼 Trabalho</a></li>
