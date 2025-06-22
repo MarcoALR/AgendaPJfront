@@ -214,9 +214,26 @@ body {
   opacity: 0.9;
 }
 
-.edit-btn { background-color: #3498db; color: white; }
-.favorite-btn { background-color: #f1c40f; color: black; }
-.delete-btn { background-color: #e74c3c; color: white; }
+.edit-btn {
+  background-color: #2f3e46;
+  color: white;
+}
+
+.favorite-btn {
+  background-color: #2f3e46;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #2f3e46;
+  color: white;
+}
+.edit-btn:hover,
+.favorite-btn:hover,
+.delete-btn:hover {
+  background-color: #3d5a6c;
+}
+
 
 .whatsapp-button {
   display: inline-flex;
