@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./../styles/criarcontato.css";
-import agendapjLogo from "./../assets/logoagenda.png";
+import "../styles/criarcontato.css";
+import agendapjLogo from "../assets/logoagenda.png";
 import axios from "axios";
 
 function CriarContato() {
@@ -33,19 +33,17 @@ function CriarContato() {
       .then(() => {
         const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
         if (usuario?.name) setUsuarioLogado(usuario.name);
-
         if (usuario?.email) {
           const savedContacts = JSON.parse(localStorage.getItem(`agenda-contatos-${usuario.email}`)) || [];
           setContacts(savedContacts);
         }
-
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark") setThemeDark(true);
       })
       .catch(() => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("usuarioLogado");
-        alert("⚠️ Sessão expirada. Por favor, faça o login.");
+        alert("⚠️ Sessão expirada. Faça login novamente.");
         navigate("/");
       });
   }, [navigate]);
@@ -60,7 +58,6 @@ function CriarContato() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -73,7 +70,7 @@ function CriarContato() {
     }
 
     if (!phoneRegex.test(phone.trim())) {
-      setErrorMsg("⚠️ Telefone inválido. Use o formato (32) 99999-9999.");
+      setErrorMsg("⚠️ Telefone inválido. Use (32) 99999-9999.");
       return;
     }
 
@@ -159,11 +156,10 @@ function CriarContato() {
   };
 
   const logout = () => {
-    const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
+    const confirmLogout = window.confirm("Tem certeza que quer sair?");
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
-      alert("Você saiu da sua conta.");
       navigate("/");
     }
   };
@@ -177,11 +173,10 @@ function CriarContato() {
         <h2 className="logo">📇 Painel PJ</h2>
         <nav>
           <ul>
-            <li><a href="/contatos">Contatos 👥</a></li>
-            <li><a href="/favoritos">Favoritos ⭐</a></li>
+            <li><a href="/contatos">👥 Contatos</a></li>
+            <li><a href="/favoritos">⭐ Favoritos</a></li>
           </ul>
           <ul>
-            <br />
             <li><a href="/familia">👨‍👩‍👧 Família</a></li>
             <li><a href="/trabalho">💼 Trabalho</a></li>
             <li><a href="/amigos">🎉 Amigos</a></li>
@@ -207,7 +202,7 @@ function CriarContato() {
 
           <div className="usuario-info">
             <span className="usuario-logado">👤 {usuarioLogado}</span>
-            <button className="botao-topo-direita" id="logout-button" onClick={logout}>Sair</button>
+            <button className="botao-topo-direita" onClick={logout}>Sair</button>
           </div>
         </div>
 
@@ -217,7 +212,7 @@ function CriarContato() {
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" required />
             <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Telefone" required />
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <select value={category} onChange={(e) => setCategory(e.target.value)} required className="categoria">
+            <select value={category} onChange={(e) => setCategory(e.target.value)} required>
               <option value="" disabled>Selecione uma categoria</option>
               <option value="Família">👨‍👩‍👧‍👦 Família</option>
               <option value="Trabalho">💼 Trabalho</option>
