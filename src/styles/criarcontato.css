@@ -526,7 +526,7 @@ option:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #000; 
+  background-color: #333; 
   color: #f5f5f5;
   padding: 8px 14px;
   margin-top: 10px;
@@ -541,7 +541,7 @@ option:hover {
 }
 
 .dark-theme .whatsapp-button:hover {
-  background-color: #111;
+   opacity: 0.9;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
@@ -568,7 +568,7 @@ option:hover {
 }
 
 .whatsapp-button:hover {
-  background-color: #1ebe5d;
+  background-color: #21be60;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
