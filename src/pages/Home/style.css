@@ -77,8 +77,8 @@ body {
   transition: 0.2s ease all;
 }
 
-.input-container input:focus + label,
-.input-container input.has-content + label {
+.input-container input:focus+label,
+.input-container input.has-content+label {
   top: -11px;
   left: 1px;
   font-size: 0.82rem;
@@ -221,6 +221,7 @@ footer img {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -231,6 +232,7 @@ footer img {
   .banner h2 {
     font-size: 2.2rem;
   }
+
   .login-container {
     padding: 24px;
   }
@@ -257,16 +259,16 @@ footer img {
 }
 
 .banner.dark .input-container input:focus {
-  border-color:  #224086;
-  box-shadow: 0 0 8px  #3d4e74;
+  border-color: #224086;
+  box-shadow: 0 0 8px #3d4e74;
 }
 
 .banner.dark .input-container label {
   color: #aaa;
 }
 
-.banner.dark .input-container input:focus + label,
-.banner.dark .input-container input.has-content + label {
+.banner.dark .input-container input:focus+label,
+.banner.dark .input-container input.has-content+label {
   color: #ffffff;
 }
 
@@ -338,11 +340,11 @@ footer img {
   transition: 0.4s;
 }
 
-.switch input:checked + .slider {
+.switch input:checked+.slider {
   background-color: #3b4252;
 }
 
-.switch input:checked + .slider:before {
+.switch input:checked+.slider:before {
   transform: translateX(26px);
 }
 
@@ -377,6 +379,7 @@ footer img {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
