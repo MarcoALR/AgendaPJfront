@@ -139,7 +139,7 @@ function Favoritos() {
         <h2>Contatos Favoritos</h2>
         <br />
 
-        <div id="favorites-container">
+        <div id="contacts-container">
           {favorites.length === 0 ? (
             <p>Nenhum contato favorito ainda.</p>
           ) : (
