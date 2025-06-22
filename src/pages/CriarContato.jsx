@@ -320,6 +320,16 @@ function CriarContato() {
                 <button onClick={() => handleDelete(contact.id)}>
                   🗑️ Excluir
                 </button>
+                <a
+                  href={`https://wa.me/${contact.phone
+                    .replace(/\D/g, "")
+                    .replace(/^0/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whatsapp-button"
+                >
+                  🟢 WhatsApp
+                </a>
               </div>
             ))}
           </div>
