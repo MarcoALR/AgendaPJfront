@@ -36,9 +36,7 @@ function Trabalho() {
         }
 
         console.log("✅ Sessão válida, usuário autenticado");
-
         loadTrabalho();
-
       } catch (error) {
         console.error("❌ Erro de autenticação:", error);
         localStorage.removeItem("accessToken");
@@ -138,23 +136,29 @@ function Trabalho() {
           {contacts.length === 0 ? (
             <p>Nenhum contato na categoria Trabalho ainda.</p>
           ) : (
-            contacts.map((contact, index) => (
-              <div className="contact-card" key={index}>
-                <h3>{contact.name}</h3>
-                <p>📞 {contact.phone}</p>
-                <p>📧 {contact.email || "—"}</p>
-                <p>📁 Categoria: <strong>{contact.category}</strong></p>
-                {contact.favorite && <p>⭐ Favorito</p>}
-                <a
-                  href={`https://wa.me/${contact.phone.replace(/\D/g, "").replace(/^0/, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="whatsapp-button"
-                >
-                  🟢 WhatsApp
-                </a>
-              </div>
-            ))
+            contacts.map((contact, index) => {
+              const formattedPhone = "55" + contact.phone
+                .replace(/\D/g, "")
+                .replace(/^0/, "");
+
+              return (
+                <div className="contact-card" key={index}>
+                  <h3>{contact.name}</h3>
+                  <p>📞 {contact.phone}</p>
+                  <p>📧 {contact.email || "—"}</p>
+                  <p>📁 Categoria: <strong>{contact.category}</strong></p>
+                  {contact.favorite && <p>⭐ Favorito</p>}
+                  <a
+                    href={`https://wa.me/${formattedPhone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="whatsapp-button"
+                  >
+                    🟢 WhatsApp
+                  </a>
+                </div>
+              );
+            })
           )}
         </div>
       </main>

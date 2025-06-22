@@ -69,9 +69,7 @@ function Contatos() {
   };
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm(
-      "Tem certeza que quer sair da sua conta?"
-    );
+    const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
@@ -177,25 +175,31 @@ function Contatos() {
           {filteredContacts.length === 0 ? (
             <p>Nenhum contato encontrado.</p>
           ) : (
-            filteredContacts.map((contact) => (
-              <div key={contact.id} className="contact-card">
-                <h3>{contact.name}</h3>
-                <p>📞 {contact.phone}</p>
-                <p>📧 {contact.email || "—"}</p>
-                <p>
-                  📁 Categoria: <strong>{contact.category || "—"}</strong>
-                </p>
-                <p>{contact.favorite ? "⭐ Favorito" : ""}</p>
-                <a
-                  href={`https://wa.me/${contact.phone.replace(/[^\d]/g, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="whatsapp-button"
-                >
-                  <span className="whatsapp-icon">🟢</span> WhatsApp
-                </a>
-              </div>
-            ))
+            filteredContacts.map((contact) => {
+              const formattedPhone = "55" + contact.phone
+                .replace(/\D/g, "")
+                .replace(/^0/, "");
+
+              return (
+                <div key={contact.id} className="contact-card">
+                  <h3>{contact.name}</h3>
+                  <p>📞 {contact.phone}</p>
+                  <p>📧 {contact.email || "—"}</p>
+                  <p>
+                    📁 Categoria: <strong>{contact.category || "—"}</strong>
+                  </p>
+                  <p>{contact.favorite ? "⭐ Favorito" : ""}</p>
+                  <a
+                    href={`https://wa.me/${formattedPhone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="whatsapp-button"
+                  >
+                    <span className="whatsapp-icon">🟢</span> WhatsApp
+                  </a>
+                </div>
+              );
+            })
           )}
         </div>
       </main>

@@ -2,18 +2,22 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
 import agendapjLogo from "./../assets/logoagenda.png";
+
 function Outros() {
   const navigate = useNavigate();
   const [theme, setTheme] = useState("light");
   const [contacts, setContacts] = useState([]);
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
+
     if (!token) {
       alert("⚠️ Você precisa estar autenticado para acessar esta página.");
       navigate("/");
       return;
     }
+
     async function validateTokenAndLoadData() {
       try {
         const response = await fetch(
@@ -26,9 +30,11 @@ function Outros() {
             },
           }
         );
+
         if (!response.ok) {
           throw new Error("Sessão inválida ou expirada");
         }
+
         console.log("✅ Sessão válida, usuário autenticado");
         loadOutros();
       } catch (error) {
@@ -39,7 +45,9 @@ function Outros() {
         navigate("/");
       }
     }
+
     validateTokenAndLoadData();
+
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       document.body.classList.add("dark-theme");
@@ -140,25 +148,31 @@ function Outros() {
           {contacts.length === 0 ? (
             <p>Nenhum contato na categoria Outros ainda.</p>
           ) : (
-            contacts.map((contact, index) => (
-              <div className="contact-card" key={index}>
-                <h3>{contact.name}</h3>
-                <p>📞 {contact.phone}</p>
-                <p>📧 {contact.email || "—"}</p>
-                <p>
-                  📁 Categoria: <strong>{contact.category}</strong>
-                </p>
-                {contact.favorite && <p>⭐ Favorito</p>}
-                <a
-                  href={`https://wa.me/${contact.phone.replace(/\D/g, "").replace(/^0/, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="whatsapp-button"
-                >
-                  🟢 WhatsApp
-                </a>
-              </div>
-            ))
+            contacts.map((contact, index) => {
+              const formattedPhone = "55" + contact.phone
+                .replace(/\D/g, "")
+                .replace(/^0/, "");
+
+              return (
+                <div className="contact-card" key={index}>
+                  <h3>{contact.name}</h3>
+                  <p>📞 {contact.phone}</p>
+                  <p>📧 {contact.email || "—"}</p>
+                  <p>
+                    📁 Categoria: <strong>{contact.category}</strong>
+                  </p>
+                  {contact.favorite && <p>⭐ Favorito</p>}
+                  <a
+                    href={`https://wa.me/${formattedPhone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="whatsapp-button"
+                  >
+                    🟢 WhatsApp
+                  </a>
+                </div>
+              );
+            })
           )}
         </div>
       </main>
