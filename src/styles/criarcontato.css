@@ -522,11 +522,11 @@ option:hover {
   color: #f0f0f0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
-.whatsapp-button {
+.dark-theme .whatsapp-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #2f3e46; /* botão padrão */
+  background-color: #2f3e46;
   color: white;
   padding: 8px 14px;
   margin-top: 10px;
@@ -539,13 +539,13 @@ option:hover {
   font-size: 14px;
 }
 
-.whatsapp-button:hover {
+.dark-theme .whatsapp-button:hover {
   background-color: #3d5a6c;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
-.whatsapp-icon {
+.dark-theme .whatsapp-icon {
   margin-right: 8px;
   font-size: 1.1em;
 }
