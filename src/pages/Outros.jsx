@@ -149,6 +149,14 @@ function Outros() {
                   📁 Categoria: <strong>{contact.category}</strong>
                 </p>
                 {contact.favorite && <p>⭐ Favorito</p>}
+                <a
+                  href={`https://wa.me/${contact.phone.replace(/\D/g, "").replace(/^0/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whatsapp-button"
+                >
+                  🟢 WhatsApp
+                </a>
               </div>
             ))
           )}

@@ -11,7 +11,6 @@ function Amigos() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     if (!token) {
       alert("⚠️ Você precisa estar autenticado para acessar esta página.");
       navigate("/");
@@ -20,23 +19,16 @@ function Amigos() {
 
     async function validateTokenAndLoadData() {
       try {
-        const response = await fetch(
-          "https://apiusuariospj.onrender.com/validate-token",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch("https://apiusuariospj.onrender.com/validate-token", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-        if (!response.ok) {
-          throw new Error("Sessão inválida ou expirada");
-        }
-
+        if (!response.ok) throw new Error("Sessão inválida ou expirada");
         console.log("✅ Sessão válida, usuário autenticado");
-
         loadAmigos();
       } catch (error) {
         console.error("❌ Erro de autenticação:", error);
@@ -64,10 +56,9 @@ function Amigos() {
 
     const contatosKey = `agenda-contatos-${usuario.email}`;
     const data = localStorage.getItem(contatosKey);
-
     if (data) {
       const contactsData = JSON.parse(data);
-      const filtered = contactsData.filter((c) => c.category === "Amigos");
+      const filtered = contactsData.filter(c => c.category === "Amigos");
       setContacts(filtered);
     } else {
       setContacts([]);
@@ -82,13 +73,10 @@ function Amigos() {
   };
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm(
-      "Tem certeza que quer sair da sua conta?"
-    );
+    const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
-      console.log("Logout realizado");
       alert("Você saiu da sua conta.");
       navigate("/");
     }
@@ -103,27 +91,15 @@ function Amigos() {
         <h2 className="logo">🎉 Amigos</h2>
         <nav>
           <ul>
-            <li>
-              <a href="/criarcontato">Painel 📇</a>
-            </li>
-            <li>
-              <a href="/contatos">Contatos 👥</a>
-            </li>
-            <li>
-              <a href="/favoritos">⭐ Favoritos</a>
-            </li>
+            <li><a href="/criarcontato">Painel 📇</a></li>
+            <li><a href="/contatos">Contatos 👥</a></li>
+            <li><a href="/favoritos">⭐ Favoritos</a></li>
           </ul>
           <ul>
             <br />
-            <li>
-              <a href="/familia">👨‍👩‍👧 Família</a>
-            </li>
-            <li>
-              <a href="/trabalho">💼 Trabalho</a>
-            </li>
-            <li>
-              <a href="/outros">📂 Outros</a>
-            </li>
+            <li><a href="/familia">👨‍👩‍👧 Família</a></li>
+            <li><a href="/trabalho">💼 Trabalho</a></li>
+            <li><a href="/outros">📂 Outros</a></li>
           </ul>
         </nav>
       </aside>
@@ -132,11 +108,7 @@ function Amigos() {
         <div className="theme-toggle">
           <span>🌗</span>
           <label className="switch">
-            <input
-              type="checkbox"
-              checked={theme === "dark"}
-              onChange={handleThemeToggle}
-            />
+            <input type="checkbox" checked={theme === "dark"} onChange={handleThemeToggle} />
             <span className="slider"></span>
           </label>
           <span>🌙</span>
@@ -144,7 +116,6 @@ function Amigos() {
 
         <h2>Contatos - Amigos</h2>
         <br />
-
         <div className="contacts-container">
           {contacts.length === 0 ? (
             <p>Nenhum contato na categoria Amigos ainda.</p>
@@ -154,10 +125,16 @@ function Amigos() {
                 <h3>{contact.name}</h3>
                 <p>📞 {contact.phone}</p>
                 <p>📧 {contact.email || "—"}</p>
-                <p>
-                  📁 Categoria: <strong>{contact.category}</strong>
-                </p>
+                <p>📁 Categoria: <strong>{contact.category}</strong></p>
                 {contact.favorite && <p>⭐ Favorito</p>}
+                <a
+                  href={`https://wa.me/${contact.phone.replace(/\D/g, "").replace(/^0/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whatsapp-button"
+                >
+                  🟢 WhatsApp
+                </a>
               </div>
             ))
           )}
@@ -165,12 +142,8 @@ function Amigos() {
       </main>
 
       <div className="usuario-info">
-        <span className="usuario-logado">
-          👤 {usuario?.name ? usuario.name : "Usuário"}
-        </span>
-        <button className="botao-topo-direita" onClick={handleLogout}>
-          Sair
-        </button>
+        <span className="usuario-logado">👤 {usuario?.name || "Usuário"}</span>
+        <button className="botao-topo-direita" onClick={handleLogout}>Sair</button>
       </div>
     </div>
   );
