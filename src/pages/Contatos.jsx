@@ -186,6 +186,14 @@ function Contatos() {
                   📁 Categoria: <strong>{contact.category || "—"}</strong>
                 </p>
                 <p>{contact.favorite ? "⭐ Favorito" : ""}</p>
+                <a
+                  href={`https://wa.me/${contact.phone.replace(/[^\d]/g, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whatsapp-button"
+                >
+                  <span className="whatsapp-icon">🟢</span> WhatsApp
+                </a>
               </div>
             ))
           )}

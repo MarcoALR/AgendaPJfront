@@ -23,6 +23,7 @@ function Favoritos() {
       setFavorites([]);
     }
   }, [usuario]);
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -44,9 +45,8 @@ function Favoritos() {
             },
           }
         );
-        if (!response.ok) {
-          throw new Error("Sessão inválida ou expirada");
-        }
+        if (!response.ok) throw new Error("Sessão inválida ou expirada");
+
         console.log("✅ Sessão válida, usuário autenticado");
         loadFavorites();
       } catch (error) {
@@ -57,13 +57,15 @@ function Favoritos() {
         navigate("/");
       }
     }
+
     validateTokenAndLoadData();
+
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       document.body.classList.add("dark-theme");
       setTheme("dark");
     }
-  }, [navigate]);
+  }, [navigate, loadFavorites]);
 
   const handleThemeToggle = () => {
     const isDark = theme === "light";
@@ -150,6 +152,16 @@ function Favoritos() {
                   📁 Categoria: <strong>{contact.category || "—"}</strong>
                 </p>
                 <p>⭐ Favorito</p>
+                <a
+                  href={`https://wa.me/${contact.phone
+                    .replace(/\D/g, "")
+                    .replace(/^0/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whatsapp-button"
+                >
+                  🟢 WhatsApp
+                </a>
               </div>
             ))
           )}
