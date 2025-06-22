@@ -523,18 +523,26 @@ option:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 .whatsapp-button {
-  display: inline-block;
-  margin-top: 5px;
-  padding: 6px 12px;
-  background-color: #25d365e8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #28ce65;
   color: white;
-  text-decoration: none;
-  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
   font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
 .whatsapp-button:hover {
-  background-color: #1ebc58dc;
+  background-color: #1ebe5d;
 }
 
-
+.whatsapp-icon {
+  margin-right: 8px;
+  font-size: 1.2em;
+}

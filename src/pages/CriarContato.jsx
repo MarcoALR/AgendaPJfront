@@ -21,7 +21,6 @@ function CriarContato() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     if (!token) {
       alert("⚠️ Você precisa estar autenticado para acessar esta página.");
       navigate("/");
@@ -30,33 +29,23 @@ function CriarContato() {
 
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    axios
-      .get(`${API_URL}/usuarios`)
+    axios.get(`${API_URL}/usuarios`)
       .then(() => {
-        console.log("✅ Sessão válida, usuário autenticado");
         const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-        if (usuario && usuario.name) {
-          setUsuarioLogado(usuario.name);
-        }
+        if (usuario?.name) setUsuarioLogado(usuario.name);
 
-        if (usuario && usuario.email) {
-          const savedContacts =
-            JSON.parse(
-              localStorage.getItem(`agenda-contatos-${usuario.email}`)
-            ) || [];
+        if (usuario?.email) {
+          const savedContacts = JSON.parse(localStorage.getItem(`agenda-contatos-${usuario.email}`)) || [];
           setContacts(savedContacts);
         }
 
         const savedTheme = localStorage.getItem("theme");
-        if (savedTheme === "dark") {
-          setThemeDark(true);
-        }
+        if (savedTheme === "dark") setThemeDark(true);
       })
-      .catch((error) => {
-        console.error("❌ Erro de autenticação:", error);
+      .catch(() => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("usuarioLogado");
-        alert("⚠️ Sessão expirada. Por favor, faça o login. ⚠️");
+        alert("⚠️ Sessão expirada. Por favor, faça o login.");
         navigate("/");
       });
   }, [navigate]);
@@ -64,11 +53,8 @@ function CriarContato() {
   const saveContacts = (newContacts) => {
     setContacts(newContacts);
     const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-    if (usuario && usuario.email) {
-      localStorage.setItem(
-        `agenda-contatos-${usuario.email}`,
-        JSON.stringify(newContacts)
-      );
+    if (usuario?.email) {
+      localStorage.setItem(`agenda-contatos-${usuario.email}`, JSON.stringify(newContacts));
     }
   };
 
@@ -101,38 +87,36 @@ function CriarContato() {
       return;
     }
 
-    const telefoneDuplicado = contacts.some(
-      (c) => c.phone === phone && c.id !== editingId
-    );
+    const telefoneDuplicado = contacts.some((c) => c.phone === phone && c.id !== editingId);
     if (telefoneDuplicado) {
       setErrorMsg("⚠️ Este telefone já está cadastrado.");
       return;
     }
 
-    const emailDuplicado =
-      email && contacts.some((c) => c.email === email && c.id !== editingId);
+    const emailDuplicado = email && contacts.some((c) => c.email === email && c.id !== editingId);
     if (emailDuplicado) {
       setErrorMsg("⚠️ Este email já está cadastrado.");
       return;
     }
+
+    const novoContato = {
+      id: Date.now(),
+      name,
+      phone,
+      email,
+      category,
+      favorite: false,
+    };
 
     if (editingId) {
       const updatedContacts = contacts.map((c) =>
         c.id === editingId ? { ...c, name, phone, email, category } : c
       );
       saveContacts(updatedContacts);
-      setEditingId(null);
       setSuccessMsg("✅ Contato editado com sucesso!");
+      setEditingId(null);
     } else {
-      const newContact = {
-        id: Date.now(),
-        name,
-        phone,
-        email,
-        category,
-        favorite: false,
-      };
-      const updatedContacts = [...contacts, newContact];
+      const updatedContacts = [...contacts, novoContato];
       saveContacts(updatedContacts);
       setSuccessMsg("✅ Contato salvo com sucesso!");
     }
@@ -175,13 +159,10 @@ function CriarContato() {
   };
 
   const logout = () => {
-    const confirmLogout = window.confirm(
-      "Tem certeza que quer sair da sua conta?"
-    );
+    const confirmLogout = window.confirm("Tem certeza que quer sair da sua conta?");
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("usuarioLogado");
-      console.log("Logout realizado");
       alert("Você saiu da sua conta.");
       navigate("/");
     }
@@ -196,41 +177,21 @@ function CriarContato() {
         <h2 className="logo">📇 Painel PJ</h2>
         <nav>
           <ul>
-            <li>
-              <a href="/contatos">Contatos 👥</a>
-            </li>
-            <li>
-              <a href="/favoritos">Favoritos ⭐</a>
-            </li>
+            <li><a href="/contatos">Contatos 👥</a></li>
+            <li><a href="/favoritos">Favoritos ⭐</a></li>
           </ul>
           <ul>
             <br />
-            <li>
-              <a href="/familia">👨‍👩‍👧 Família</a>
-            </li>
-            <li>
-              <a href="/trabalho">💼 Trabalho</a>
-            </li>
-            <li>
-              <a href="/amigos">🎉 Amigos</a>
-            </li>
-            <li>
-              <a href="/outros">📂 Outros</a>
-            </li>
+            <li><a href="/familia">👨‍👩‍👧 Família</a></li>
+            <li><a href="/trabalho">💼 Trabalho</a></li>
+            <li><a href="/amigos">🎉 Amigos</a></li>
+            <li><a href="/outros">📂 Outros</a></li>
           </ul>
         </nav>
       </aside>
 
       <main className="main-content">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <center></center>
+        <div className="top-bar">
           <div className="theme-toggle">
             <span>🌗</span>
             <label className="switch">
@@ -246,92 +207,53 @@ function CriarContato() {
 
           <div className="usuario-info">
             <span className="usuario-logado">👤 {usuarioLogado}</span>
-            <button
-              className="botao-topo-direita"
-              id="logout-button"
-              onClick={logout}
-            >
-              Sair
-            </button>
+            <button className="botao-topo-direita" id="logout-button" onClick={logout}>Sair</button>
           </div>
         </div>
 
         <section id="app">
           <h2>Contatos</h2>
           <form onSubmit={handleSubmit} id="contact-form">
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nome"
-              required
-            />
-            <input
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="Telefone"
-              required
-            />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-            />
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-              className="categoria"
-            >
-              <option value="" disabled>
-                Selecione uma categoria
-              </option>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" required />
+            <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Telefone" required />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+            <select value={category} onChange={(e) => setCategory(e.target.value)} required className="categoria">
+              <option value="" disabled>Selecione uma categoria</option>
               <option value="Família">👨‍👩‍👧‍👦 Família</option>
               <option value="Trabalho">💼 Trabalho</option>
               <option value="Amigos">🎉 Amigos</option>
               <option value="Outros">📁 Outros</option>
             </select>
-
-            <button type="submit">
-              {editingId ? "Salvar Edição" : "Adicionar Contato"}
-            </button>
-
+            <button type="submit">{editingId ? "Salvar Edição" : "Adicionar Contato"}</button>
             {errorMsg && <div id="form-error">{errorMsg}</div>}
             {successMsg && <div id="form-success">{successMsg}</div>}
           </form>
 
           <div id="contacts-container">
-            {contacts.map((contact) => (
-              <div key={contact.id} className="contact-card">
-                <h3>{contact.name}</h3>
-                <p>📞 {contact.phone}</p>
-                <p>📧 {contact.email || "—"}</p>
-                <p>
-                  📁 Categoria: <strong>{contact.category || "—"}</strong>
-                </p>
-                <button onClick={() => toggleFavorite(contact.id)}>
-                  {contact.favorite ? "⭐ Favorito" : "☆ Favorito"}
-                </button>
-                <button onClick={() => handleEdit(contact.id)}>
-                  ✏️ Editar
-                </button>
-                <button onClick={() => handleDelete(contact.id)}>
-                  🗑️ Excluir
-                </button>
-                <a
-                  href={`https://wa.me/${contact.phone
-                    .replace(/\D/g, "")
-                    .replace(/^0/, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="whatsapp-button"
-                >
-                  🟢 WhatsApp
-                </a>
-              </div>
-            ))}
+            {contacts.map((contact) => {
+              const formattedPhone = "55" + contact.phone.replace(/\D/g, "").replace(/^0/, "");
+              return (
+                <div key={contact.id} className="contact-card">
+                  <h3>{contact.name}</h3>
+                  <p>📞 {contact.phone}</p>
+                  <p>📧 {contact.email || "—"}</p>
+                  <p>📁 Categoria: <strong>{contact.category || "—"}</strong></p>
+                  <button onClick={() => toggleFavorite(contact.id)}>
+                    {contact.favorite ? "⭐ Favorito" : "☆ Favorito"}
+                  </button>
+                  <button onClick={() => handleEdit(contact.id)}>✏️ Editar</button>
+                  <button onClick={() => handleDelete(contact.id)}>🗑️ Excluir</button>
+                  <a
+                    href={`https://wa.me/${formattedPhone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="whatsapp-button"
+                  >
+                    <span className="whatsapp-icon">🟢</span> WhatsApp
+                  </a>
+                </div>
+              );
+            })}
           </div>
         </section>
       </main>
