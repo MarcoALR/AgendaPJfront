@@ -233,11 +233,11 @@ function CriarContato() {
                   <p>📞 {contact.phone}</p>
                   <p>📧 {contact.email || "—"}</p>
                   <p>📁 Categoria: <strong>{contact.category || "—"}</strong></p>
-                  <button onClick={() => toggleFavorite(contact.id)}>
+                  <button className="favorite-btn" onClick={() => toggleFavorite(contact.id)}>
                     {contact.favorite ? "⭐ Favorito" : "☆ Favorito"}
                   </button>
-                  <button onClick={() => handleEdit(contact.id)}>✏️ Editar</button>
-                  <button onClick={() => handleDelete(contact.id)}>🗑️ Excluir</button>
+                  <button className="edit-btn" onClick={() => handleEdit(contact.id)}>✏️ Editar</button>
+                  <button className="delete-btn" onClick={() => handleDelete(contact.id)}>🗑️ Excluir</button>
                   <a
                     href={`https://wa.me/${formattedPhone}`}
                     target="_blank"
