@@ -219,7 +219,7 @@ function CriarContato() {
               <option value="Amigos">🎉 Amigos</option>
               <option value="Outros">📁 Outros</option>
             </select>
-            <button className="" type="submit">{editingId ? "Salvar Edição" : "Adicionar Contato"}</button>
+            <button className="adicionarctt" type="submit">{editingId ? "Salvar Edição" : "Adicionar Contato"}</button>
             {errorMsg && <div id="form-error">{errorMsg}</div>}
             {successMsg && <div id="form-success">{successMsg}</div>}
           </form>
