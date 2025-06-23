@@ -248,6 +248,10 @@ body {
   color: white;
 }
 
+.adicionarctt :hover {
+  background-color: #3d5a6c;
+}
+
 .delete-btn {
   background-color: #2f3e46;
   color: white;
