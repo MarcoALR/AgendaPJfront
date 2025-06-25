@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/favoritos.css";
 import agendapjLogo from "./../assets/logoagenda.png";
@@ -7,33 +7,39 @@ function Favoritos() {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [theme, setTheme] = useState("light");
-  const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
 
-  const loadFavorites = useCallback(() => {
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const token = localStorage.getItem("accessToken");
+
+  const loadFavorites = () => {
     if (!usuario || !usuario.email) {
       setFavorites([]);
       return;
     }
+
     const data = localStorage.getItem(`agenda-contatos-${usuario.email}`);
     if (data) {
-      const contacts = JSON.parse(data);
-      const favs = contacts.filter((c) => c.favorite);
-      setFavorites(favs);
+      try {
+        const contacts = JSON.parse(data);
+        const favs = contacts.filter((c) => c.favorite);
+        setFavorites(favs);
+      } catch (e) {
+        console.error("Erro ao carregar favoritos:", e);
+        setFavorites([]);
+      }
     } else {
       setFavorites([]);
     }
-  }, [usuario]);
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
     if (!token) {
       alert("⚠️ Você precisa estar autenticado para acessar esta página.");
       navigate("/");
       return;
     }
 
-    async function validateTokenAndLoadData() {
+    const validateTokenAndLoadData = async () => {
       try {
         const response = await fetch(
           "https://apiusuariospj.onrender.com/validate-token",
@@ -56,7 +62,7 @@ function Favoritos() {
         alert("⚠️ Sessão expirada. Por favor, faça o login.");
         navigate("/");
       }
-    }
+    };
 
     validateTokenAndLoadData();
 
@@ -65,7 +71,7 @@ function Favoritos() {
       document.body.classList.add("dark-theme");
       setTheme("dark");
     }
-  }, [navigate, loadFavorites]);
+  }, [navigate, token]);
 
   const handleThemeToggle = () => {
     const isDark = theme === "light";
@@ -144,9 +150,8 @@ function Favoritos() {
             <p>Nenhum contato favorito ainda.</p>
           ) : (
             favorites.map((contact, index) => {
-              const formattedPhone = "55" + contact.phone
-                .replace(/\D/g, "")
-                .replace(/^0/, "");
+              const formattedPhone =
+                "55" + contact.phone.replace(/\D/g, "").replace(/^0/, "");
 
               return (
                 <div className="contact-card" key={index}>
