@@ -295,19 +295,20 @@ footer img {
 .banner.dark footer img {
   filter: brightness(0.8) invert(1);
 }
-
 .theme-toggle {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 16px;
   margin-bottom: 20px;
+  font-size: 1.6rem; 
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 24px;
+  width: 60px;
+  height: 30px;
 }
 
 .switch input {
@@ -317,35 +318,51 @@ footer img {
 }
 
 .slider {
+  display: flex;
+  align-items: center;
+  padding: 0 3px;
   position: absolute;
-  cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  border-radius: 24px;
-  transition: 0.4s;
+  border-radius: 30px;
+  transition: background-color 0.4s ease, border 0.4s ease;
+  border: 2px solid #888;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
-.slider:before {
-  position: absolute;
+.slider::before {
   content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
+  height: 21px;
+  width: 21px;
   background-color: white;
   border-radius: 50%;
-  transition: 0.4s;
+  transition: transform 0.4s ease;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
-.switch input:checked+.slider {
+.switch input:checked + .slider {
   background-color: #3b4252;
+  border: 2px solid #2f3e46;
 }
 
-.switch input:checked+.slider:before {
-  transform: translateX(26px);
+.switch input:checked + .slider::before {
+  transform: translateX(30px);
+  animation: pulse 1s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(47, 62, 70, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(47, 62, 70, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(47, 62, 70, 0);
+  }
 }
 
 .feedback-message {
