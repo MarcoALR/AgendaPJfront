@@ -42,7 +42,7 @@ function Favoritos() {
     const validateTokenAndLoadData = async () => {
       try {
         const response = await fetch(
-          "https://apiusuariospj.onrender.com/validate-token",
+          "https://apiusuarios-rouge.vercel.app/validate-token",
           {
             method: "GET",
             headers: {

@@ -21,7 +21,7 @@ function Contatos() {
       return;
     }
 
-    fetch("https://apiusuariospj.onrender.com/validate-token", {
+    fetch("https://apiusuarios-rouge.vercel.app/validate-token", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

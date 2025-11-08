@@ -21,7 +21,7 @@ function Familia() {
     async function validateTokenAndLoadData() {
       try {
         const response = await fetch(
-          "https://apiusuariospj.onrender.com/validate-token",
+          "https://apiusuarios-rouge.vercel.app/validate-token",
           {
             method: "GET",
             headers: {
