@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="./public/preview-agenda.png" alt="Agenda PJ Preview" width="700"/>
+  <img src="./public/preview-agenda.jpeg" alt="Agenda PJ Preview" width="700"/>
 </p>
 
 ---
@@ -37,7 +37,7 @@
 ## 📸 Preview da Interface
 
 <p align="center">
-  <img src="./public/previewindex.jpg" alt="Preview da Agenda PJ" width="700">
+  <img src="./public/previewindex.png" alt="Preview da Agenda PJ" width="700">
 </p>
 
 ---
