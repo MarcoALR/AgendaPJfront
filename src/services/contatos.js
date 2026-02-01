@@ -10,7 +10,7 @@
 
       try {
         const response = await fetch(
-          "https://apiusuariospj.onrender.comvalidate-token",
+          "https://apiusuariospj.onrender.com/validate-token",
           {
             method: "GET",
             headers: {
