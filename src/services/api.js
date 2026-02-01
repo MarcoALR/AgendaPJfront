@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://apiusuarios-rouge.vercel.app/',
+  baseURL: 'https://apiusuariospj.onrender.com',
 });
 
 export default api;

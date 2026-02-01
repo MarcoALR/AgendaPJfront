@@ -19,7 +19,7 @@ function Amigos() {
 
     async function validateTokenAndLoadData() {
       try {
-        const response = await fetch("https://apiusuarios-rouge.vercel.app/validate-token", {
+        const response = await fetch("https://apiusuariospj.onrender.com/validate-token", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

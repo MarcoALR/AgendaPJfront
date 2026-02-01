@@ -10,7 +10,7 @@
 
       try {
         const response = await fetch(
-          "https://apiusuarios-rouge.vercel.app/validate-token",
+          "https://apiusuariospj.onrender.comvalidate-token",
           {
             method: "GET",
             headers: {

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
     const response = await fetch(
-      "https://apiusuarios-rouge.vercel.app//validate-token",
+      "https://apiusuariospj.onrender.com/validate-token",
       {
         method: "GET",
         headers: {

@@ -21,7 +21,7 @@ function Outros() {
     async function validateTokenAndLoadData() {
       try {
         const response = await fetch(
-          "https://apiusuarios-rouge.vercel.app/validate-token",
+          "https://apiusuariospj.onrender.com/validate-token",
           {
             method: "GET",
             headers: {

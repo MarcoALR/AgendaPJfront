@@ -6,7 +6,7 @@ import axios from "axios";
 
 function CriarContato() {
   const navigate = useNavigate();
-  const API_URL = "https://apiusuarios-rouge.vercel.app/";
+  const API_URL = "https://apiusuariospj.onrender.com/";
 
   const [themeDark, setThemeDark] = useState(false);
   const [name, setName] = useState("");
