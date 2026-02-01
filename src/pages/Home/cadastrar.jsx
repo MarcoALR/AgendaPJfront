@@ -147,7 +147,7 @@ function Cadastrar() {
               Estamos muito felizes em ter você conosco e esperamos que o <strong>Agenda PJ</strong> facilite sua organização e produtividade!
             </p>
             <div style="margin: 30px 0; text-align: center;">
-              <a href="https://agenda-pj.vercel.app" target="_blank" style="background-color: #34495e; color: #fff; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+              <a href="https://apiusuariospj.onrender.com" target="_blank" style="background-color: #34495e; color: #fff; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold;">
                 Acessar Agenda PJ
               </a>
             </div>

@@ -15,7 +15,7 @@ function Home() {
   const navigate = useNavigate();
 
   const API_URL =
-    import.meta.env.VITE_API_URL || "https://apiusuarios-rouge.vercel.app/";
+    import.meta.env.VITE_API_URL || "https://apiusuariospj.onrender.com/";
 
   useEffect(() => {
     const usuario = localStorage.getItem("usuarioLogado");
