@@ -43,9 +43,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
-
-
-
     let contacts = [];
     let editingId = null;
 
