@@ -37,56 +37,41 @@ function Home() {
   };
 
   const login = async () => {
-  if (!loginValue || !password) {
-    setErrorMsg("⚠️ Preencha todos os campos.");
-    return;
-  }
-
-  try {
-    const response = await axios.post(`${API_URL}/login`, {
-      login: loginValue,
-      password,
-    });
-
-    // 👇 DEBUG (pode remover depois)
-    console.log("LOGIN RESPONSE:", response.data);
-
-    const accessToken = response.data.accessToken;
-    const refreshToken = response.data.refreshToken;
-    const usuario = response.data.usuario;
-
-    // 🚨 GARANTIA
-    if (!accessToken) {
-      setErrorMsg("⚠️ Token não recebido do servidor.");
+    if (!loginValue || !password) {
+      setErrorMsg("⚠️ Preencha todos os campos.");
       return;
     }
 
-    localStorage.setItem(
-      "usuarioLogado",
-      JSON.stringify({
-        name: usuario?.name,
-        email: usuario?.email,
-      })
-    );
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+    try {
+      const response = await axios.post(`${API_URL}/login`, {
+        login: loginValue,
+        password,
+      });
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      const { accessToken, refreshToken, usuario } = response.data;
 
-    setErrorMsg("");
-    navigate("/criarcontato");
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
+      localStorage.setItem(
+        "usuarioLogado",
+        JSON.stringify({ name: usuario.name, email: usuario.email })
+      );
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
 
-    if (error.response?.status === 401) {
-      setErrorMsg("⚠️ Usuário ou senha incorretos.");
-    } else if (error.message === "Network Error") {
-      setErrorMsg("⚠️ Servidor indisponível.");
-    } else {
-      setErrorMsg("⚠️ Erro ao tentar logar.");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      setErrorMsg("");
+
+      navigate("/criarcontato");
+    } catch (error) {
+      if (error.response?.status === 401) {
+        setErrorMsg("⚠️ Usuário ou senha incorretos.");
+      } else if (error.message === "Network Error") {
+        setErrorMsg("⚠️ Servidor indisponível. Verifique sua conexão.");
+      } else {
+        setErrorMsg("⚠️ Erro ao tentar logar. Tente novamente mais tarde.");
+      }
     }
-  }
-};
+  };
+
   const irParaCadastro = () => {
     navigate("/cadastrar");
   };
