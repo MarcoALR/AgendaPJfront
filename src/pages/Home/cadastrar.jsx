@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 import agendapjLogo from "./logoagenda.png";
@@ -85,9 +85,11 @@ function Cadastrar() {
       // 2. Avisar sucesso e redirecionar imediatamente
       showMessage("✅ Usuário criado com sucesso!", "sucesso");
       
-      // DISPARO SILENCIOSO: Chamamos a função mas NÃO usamos o "await" nela.
-      // Assim o redirecionamento abaixo acontece sem esperar o e-mail terminar.
-      enviarEmailBoasVindas(name, email, password);
+      // CORREÇÃO: Delay de 800ms para garantir que o banco de dados (MongoDB) 
+      // sincronizou o novo registro antes de tentar o login automático.
+      setTimeout(() => {
+        enviarEmailBoasVindas(name, email, password);
+      }, 800);
 
       setTimeout(() => navigate("/"), 1500);
     } catch (error) {
@@ -102,11 +104,11 @@ function Cadastrar() {
 
   async function enviarEmailBoasVindas(name, email, password) {
     try {
+      // Login automático para obter token de autorização
       const loginResponse = await api.post("/login", { login: email, password });
       const token = loginResponse.data.accessToken;
 
       if (token) {
-        // Envia o e-mail mantendo a sua mensagem personalizada original
         await api.post("/enviar-email", {
           to: email,
           subject: "Bem-vindo ao Agenda PJ!",
@@ -130,7 +132,7 @@ function Cadastrar() {
         });
       }
     } catch (e) {
-      console.error("Falha silenciosa no envio do e-mail.");
+      console.error("Falha silenciosa no envio do e-mail. Verifique o log do servidor.");
     }
   }
 
