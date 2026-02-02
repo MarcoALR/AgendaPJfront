@@ -22,11 +22,6 @@ function Cadastrar() {
 
   const [themeDark, setThemeDark] = useState(false);
 
-  const inputName = useRef();
-  const inputEmail = useRef();
-  const inputPassword = useRef();
-  const inputConfirmPassword = useRef();
-
   function showMessage(text, type = "sucesso") {
     setMessage({ text, type });
     setTimeout(() => setMessage(null), 4000);
@@ -70,7 +65,6 @@ function Cadastrar() {
     const password = passwordValue;
     const confirmPassword = confirmPasswordValue;
 
-    // Validações básicas de frontend
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       showMessage("⚠️ Insira um e-mail válido!", "erro");
@@ -91,7 +85,8 @@ function Cadastrar() {
       // 2. Avisar sucesso e redirecionar imediatamente
       showMessage("✅ Usuário criado com sucesso!", "sucesso");
       
-      // Iniciamos o processo de login e e-mail mas não "travamos" o redirecionamento com await
+      // DISPARO SILENCIOSO: Chamamos a função mas NÃO usamos o "await" nela.
+      // Assim o redirecionamento abaixo acontece sem esperar o e-mail terminar.
       enviarEmailBoasVindas(name, email, password);
 
       setTimeout(() => navigate("/"), 1500);
@@ -105,13 +100,13 @@ function Cadastrar() {
     }
   }
 
-  // Função isolada para processar o e-mail em background
   async function enviarEmailBoasVindas(name, email, password) {
     try {
       const loginResponse = await api.post("/login", { login: email, password });
       const token = loginResponse.data.accessToken;
 
       if (token) {
+        // Envia o e-mail mantendo a sua mensagem personalizada original
         await api.post("/enviar-email", {
           to: email,
           subject: "Bem-vindo ao Agenda PJ!",
