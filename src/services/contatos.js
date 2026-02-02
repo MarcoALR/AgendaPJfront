@@ -1,5 +1,4 @@
-
-    document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function () {
       const token = localStorage.getItem("accessToken");
 
       if (!token) {

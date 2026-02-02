@@ -1,3 +1,19 @@
+import api from "../services/api"; // Importe o nosso arquivo blindado
+
+function CriarContato() {
+  const navigate = useNavigate();
+  // REMOVA a linha: const API_URL = "https://apiusuariospj.onrender.com/";
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    // ... seu código de verificação ...
+
+    // TROQUE axios.get(`${API_URL}/usuarios`) por:
+    api.get("/usuarios") 
+      .then(() => {
+        // ... resto do código ...
+      });
+  }, []);
 document.addEventListener("DOMContentLoaded", async function () {
   const token = localStorage.getItem("accessToken");
 

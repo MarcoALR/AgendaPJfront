@@ -1,8 +1,9 @@
 import axios from "axios";
 
+// Esta linha limpa qualquer barra que venha do Vercel ou do código
 const API_URL = (
   import.meta.env.VITE_API_URL || "https://apiusuariospj.onrender.com"
-).replace(/\/$/, ""); // REMOVE BARRA FINAL
+).replace(/\/$/, ""); 
 
 const api = axios.create({
   baseURL: API_URL,
