@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import agendapjLogo from "./logoagenda.png";
-import axios from "axios";
+import api from "../../services/api";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./style.css";
 
@@ -14,9 +14,6 @@ function Home() {
 
   const navigate = useNavigate();
 
-  const API_URL =
-    import.meta.env.VITE_API_URL || "https://apiusuariospj.onrender.com";
-
   useEffect(() => {
     const usuario = localStorage.getItem("usuarioLogado");
     const accessToken = localStorage.getItem("accessToken");
@@ -25,7 +22,6 @@ function Home() {
     setThemeDark(savedTheme);
 
     if (usuario && accessToken) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       navigate("/criarcontato");
     }
   }, [navigate]);
@@ -43,79 +39,38 @@ function Home() {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await api.post("/login", {
         login: loginValue,
         password,
       });
 
       const { accessToken, refreshToken, usuario } = response.data;
 
+      if (!accessToken) {
+        throw new Error("Token não recebido");
+      }
+
       localStorage.setItem(
         "usuarioLogado",
-        JSON.stringify({ name: usuario.name, email: usuario.email })
+        JSON.stringify({
+          id: usuario.id,
+          name: usuario.name,
+          email: usuario.email,
+        })
       );
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       setErrorMsg("");
-
       navigate("/criarcontato");
     } catch (error) {
       if (error.response?.status === 401) {
         setErrorMsg("⚠️ Usuário ou senha incorretos.");
-      } else if (error.message === "Network Error") {
-        setErrorMsg("⚠️ Servidor indisponível. Verifique sua conexão.");
       } else {
-        setErrorMsg("⚠️ Erro ao tentar logar. Tente novamente mais tarde.");
+        setErrorMsg("⚠️ Erro ao fazer login.");
       }
     }
   };
-
-  const irParaCadastro = () => {
-    navigate("/cadastrar");
-  };
-  
-  axios.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (!refreshToken) {
-          localStorage.clear();
-          navigate("/");
-          return Promise.reject(error);
-        }
-
-        try {
-          const res = await axios.post(`${API_URL}/refresh-token`, {
-            refreshToken,
-          });
-
-          const newAccessToken = res.data.accessToken;
-          localStorage.setItem("accessToken", newAccessToken);
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${newAccessToken}`;
-          originalRequest.headers[
-            "Authorization"
-          ] = `Bearer ${newAccessToken}`;
-
-          return axios(originalRequest);
-        } catch (refreshError) {
-          localStorage.clear();
-          navigate("/");
-          return Promise.reject(refreshError);
-        }
-      }
-
-      return Promise.reject(error);
-    }
-  );
 
   return (
     <div className={`banner ${themeDark ? "dark" : ""}`}>
@@ -131,32 +86,30 @@ function Home() {
         </label>
         <span>🌙</span>
       </div>
+
       <h2>👥 Bem-vindo à Agenda PJ 👥</h2>
+
       <div className="login-container">
         <div className="input-container">
           <input
             type="text"
-            id="login"
             placeholder=" "
-            required
             value={loginValue}
             onChange={(e) => setLoginValue(e.target.value)}
             className={loginValue ? "has-content" : ""}
           />
-          <label htmlFor="login">Nome ou E-mail</label>
+          <label>Nome ou E-mail</label>
         </div>
 
         <div className="input-container">
           <input
             type={showPassword ? "text" : "password"}
-            id="senha"
             placeholder=" "
-            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={password ? "has-content" : ""}
           />
-          <label htmlFor="senha">Senha</label>
+          <label>Senha</label>
           <span
             onClick={() => setShowPassword(!showPassword)}
             className="password-toggle-icon"
@@ -166,9 +119,13 @@ function Home() {
         </div>
 
         <button onClick={login}>Entrar</button>
-        <button onClick={irParaCadastro} className="botao-cadastro">
+        <button
+          onClick={() => navigate("/cadastrar")}
+          className="botao-cadastro"
+        >
           Criar conta
         </button>
+
         {errorMsg && <div className="error">{errorMsg}</div>}
       </div>
 
